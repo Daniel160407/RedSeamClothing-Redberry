@@ -11,10 +11,13 @@ const Register = () => {
     const response = await useAxios.post("/register", formData);
 
     if (response?.status === 200) {
-      Cookies.set("username", response.data.user.username, { expires: 1 });
-      Cookies.set("email", response.data.user.email, { expires: 1 }); //TODO: Probably change expiration date
-      Cookies.set("profile_photo", response.data.profile_photo, { expires: 1 });
-      Cookies.set("token", response.data.token, { expires: 1 });
+      const { user, token} = response.data;
+      Cookies.set("username", user.username, { expires: 1 });
+      Cookies.set("email", user.email, { expires: 1 }); //TODO: Probably change expiration date
+      Cookies.set("token", token, { expires: 1 });
+      if (user.avatar) {
+        Cookies.set("profile_photo", user.avatar, { expires: 1 });
+      }
       navigate("/products");
     }
   };

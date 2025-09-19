@@ -40,23 +40,12 @@ const RegistrationForm = ({ onSubmit }) => {
 
     if (onSubmit) {
       onSubmit(data);
-    } else {
-      try {
-        const res = await fetch("/api/register", {
-          method: "POST",
-          body: data,
-        });
-        const result = await res.json();
-        console.log("Success:", result);
-      } catch (err) {
-        console.error("Error:", err);
-      }
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md w-554 rounded-md ">
-      <h1 className="mb-10 text-start text-3xl font-bold text-gray-800">
+    <form onSubmit={handleSubmit} className="w-[554px] rounded-md">
+      <h1 className="mb-10 text-start text-[42px] font-semibold text-gray-800">
         Registration
       </h1>
       <div className="mb-6 flex items-center gap-4">
@@ -65,7 +54,7 @@ const RegistrationForm = ({ onSubmit }) => {
           alt="Avatar"
           className="h-16 w-16 rounded-full object-cover"
         />
-        <div className="flex gap-4 text-sm text-gray-600">
+        <div className="flex gap-4 text-[14px] text-gray-600">
           <label htmlFor="avatar" className="cursor-pointer hover:underline">
             Upload new
           </label>
@@ -89,7 +78,7 @@ const RegistrationForm = ({ onSubmit }) => {
         </div>
       </div>
 
-      <div className="flex flex-col gap-4">
+      <div className="flex w-full flex-col gap-4">
         <Input
           value={formData.username}
           setValue={handleChange}

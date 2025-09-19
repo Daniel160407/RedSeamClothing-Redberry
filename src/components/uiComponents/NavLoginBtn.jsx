@@ -2,9 +2,13 @@ const NavLoginBtn = ({ onClick }) => {
   return (
     <button
       onClick={onClick}
-      className="flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors duration-200 cursor-pointer"
+      className="flex cursor-pointer items-center gap-[20px] rounded-lg px-4 py-2 transition-colors duration-200"
     >
-      <img src="/svg/default_avatar.svg" alt="avatar" className="w-6 h-6" />
+      <img
+        src="/svg/default_avatar.svg"
+        alt="avatar"
+        className="h-6 w-6 text-[12px]"
+      />
       <span className="font-medium">Log In</span>
     </button>
   );

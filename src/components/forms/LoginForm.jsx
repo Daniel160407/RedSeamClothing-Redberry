@@ -21,21 +21,22 @@ const LoginForm = ({ onSubmit }) => {
   };
 
   return (
-    <div className="mx-auto max-w-md p-5">
-      <h1 className="mb-5 text-3xl font-bold text-gray-800">Log in</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <div className="w-[554px] mx-auto p-5">
+      <h1 className="mb-5 text-[42px] font-semibold text-gray-800">Log in</h1>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">  
         <Input
           value={formData.email}
           setValue={handleChange}
           name="email"
-          placeholder={"Email or username *"}
+          placeholder={"Email *"}
         />
-        <div className="relative">
+        <div className="relative w-[554px]">
           <Input
             value={formData.password}
             setValue={handleChange}
             name="password"
             show={showPassword}
+            placeholder="Password *"
           />
           <VisibilityToggle
             fieldToHide={showPassword}

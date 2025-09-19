@@ -10,7 +10,7 @@ const Input = ({
     <input
       type={type ?? (show ? "text" : "password")}
       name={name}
-      className="w-full rounded-md border border-gray-300 p-2"
+      className="w-[554px] h-[42px] rounded-[8px] border border-gray-300 px-3"
       required
       placeholder={placeholder}
       value={value}
