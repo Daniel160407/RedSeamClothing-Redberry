@@ -1,0 +1,25 @@
+import AuthorizationNavbar from "../navigation/AuthorizationNavbar";
+
+const AuthLayout = ({ children }) => {
+  return (
+    <>
+      <AuthorizationNavbar />
+      <div className="flex">
+        <div className="hidden w-1/2 items-center justify-center bg-gray-100 lg:flex">
+          <img
+            src="/images/RegistrationImage.jpg"
+            className="h-full w-full object-cover"
+          />
+        </div>
+
+        <div className="flex w-554 items-center justify-center p-8 lg:w-1/2">
+          <div className="w-full max-w-md rounded-2xl bg-white">
+            {children}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default AuthLayout;

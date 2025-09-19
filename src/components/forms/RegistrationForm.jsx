@@ -1,5 +1,8 @@
 import { useState } from "react";
-import EyeIcon from "/svg/eye.svg";
+import Input from "../uiComponents/Input";
+import VisibilityToggle from "../uiComponents/VisibilityToggle";
+import SubmitBtn from "../uiComponents/SubmitBtn";
+import RedireqtionBtn from "../uiComponents/RedirectionBtn";
 
 const RegistrationForm = ({ onSubmit }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -52,10 +55,10 @@ const RegistrationForm = ({ onSubmit }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mx-auto max-w-md rounded-md p-6">
-      <h2 className="mb-6 text-start text-3xl font-bold text-gray-800">
+    <form onSubmit={handleSubmit} className="max-w-md w-554 rounded-md ">
+      <h1 className="mb-10 text-start text-3xl font-bold text-gray-800">
         Registration
-      </h2>
+      </h1>
       <div className="mb-6 flex items-center gap-4">
         <img
           src={preview}
@@ -63,10 +66,7 @@ const RegistrationForm = ({ onSubmit }) => {
           className="h-16 w-16 rounded-full object-cover"
         />
         <div className="flex gap-4 text-sm text-gray-600">
-          <label
-            htmlFor="avatar"
-            className="cursor-pointer hover:underline"
-          >
+          <label htmlFor="avatar" className="cursor-pointer hover:underline">
             Upload new
           </label>
           <input
@@ -90,88 +90,52 @@ const RegistrationForm = ({ onSubmit }) => {
       </div>
 
       <div className="flex flex-col gap-4">
-        <input
+        <Input
+          value={formData.username}
+          setValue={handleChange}
           type="text"
           name="username"
           placeholder="Username *"
-          required
-          value={formData.username}
-          onChange={handleChange}
-          className="w-full rounded-md border px-3 py-2"
         />
-        <input
+        <Input
+          value={formData.email}
+          setValue={handleChange}
           type="email"
           name="email"
           placeholder="Email *"
-          required
-          value={formData.email}
-          onChange={handleChange}
-          className="w-full rounded-md border px-3 py-2"
         />
-        
+
         <div className="relative">
-          <input
-            type={showPassword ? "text" : "password"}
+          <Input
             name="password"
             placeholder="Password *"
-            required
             value={formData.password}
-            onChange={handleChange}
-            className="w-full rounded-md border px-3 py-2"
+            setValue={handleChange}
+            show={showPassword}
           />
-          <button
-            type="button"
-            className="absolute top-2.5 right-3"
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            <img
-              src={showPassword ? EyeIcon : EyeIcon}
-              alt="toggle visibility"
-              className="h-5 w-5 cursor-pointer"
-            />
-          </button>
+          <VisibilityToggle
+            fieldToHide={showPassword}
+            hideField={setShowPassword}
+          />
         </div>
 
         <div className="relative">
-          <input
-            type={showConfirmPassword ? "text" : "password"}
+          <Input
             name="confirmPassword"
             placeholder="Confirm password *"
-            required
             value={formData.confirmPassword}
-            onChange={handleChange}
-            className="w-full rounded-md border px-3 py-2"
+            setValue={handleChange}
+            show={showConfirmPassword}
           />
-          <button
-            type="button"
-            className="absolute top-2.5 right-3"
-            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-          >
-            <img
-              src={showConfirmPassword ? EyeIcon : EyeIcon}
-              alt="toggle visibility"
-              className="h-5 w-5 cursor-pointer"
-            />
-          </button>
+          <VisibilityToggle
+            fieldToHide={showConfirmPassword}
+            hideField={setShowConfirmPassword}
+          />
         </div>
       </div>
 
-      <button
-        type="submit"
-        className="mt-6 w-full cursor-pointer rounded-md bg-orange-600 py-2 text-white hover:bg-orange-700"
-      >
-        Register
-      </button>
-
-      <p className="mt-4 text-center text-sm text-gray-600">
-        Already member?{" "}
-        <a
-          href="/login"
-          className="font-semibold text-orange-600 hover:underline"
-        >
-          Log in
-        </a>
-      </p>
+      <SubmitBtn text="Register" />
+      <RedireqtionBtn text="Already member?" btnText="Log in" url="/login" />
     </form>
   );
 };

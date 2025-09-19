@@ -1,37 +1,29 @@
+import { useNavigate } from "react-router-dom";
 import RegistrationForm from "../components/forms/RegistrationForm";
-import AuthorizationNavbar from "../components/navigation/AuthorizationNavbar";
 import useAxios from "../hooks/UseAxios";
 import Cookies from "js-cookie";
+import AuthLayout from "../components/layout/AuthLayout";
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const onSubmit = async (formData) => {
     const response = await useAxios.post("/register", formData);
 
     if (response?.status === 200) {
       Cookies.set("username", response.data.user.username, { expires: 1 });
       Cookies.set("email", response.data.user.email, { expires: 1 }); //TODO: Probably change expiration date
+      Cookies.set("profile_photo", response.data.profile_photo, { expires: 1 });
       Cookies.set("token", response.data.token, { expires: 1 });
+      navigate("/products");
     }
   };
 
   return (
     <>
-      <AuthorizationNavbar />
-      <div className="flex">
-        <div className="hidden w-1/2 items-center justify-center bg-gray-100 lg:flex">
-          <img
-            src="/images/RegistrationImage.jpg"
-            alt="Register"
-            className="h-full w-full object-cover"
-          />
-        </div>
-
-        <div className="flex w-full items-center justify-center p-8 lg:w-1/2">
-          <div className="w-full max-w-md rounded-2xl bg-white p-8">
-            <RegistrationForm onSubmit={onSubmit} />
-          </div>
-        </div>
-      </div>
+      <AuthLayout>
+        <RegistrationForm onSubmit={onSubmit} />
+      </AuthLayout>
     </>
   );
 };
