@@ -1,8 +1,6 @@
 import { useState } from "react";
 import Input from "../uiComponents/Input";
-import VisibilityToggle from "../uiComponents/VisibilityToggle";
-import SubmitBtn from "../uiComponents/SubmitBtn";
-import RedireqtionBtn from "../uiComponents/RedirectionBtn";
+import { Link } from "react-router-dom";
 
 const RegistrationForm = ({ onSubmit }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -102,10 +100,6 @@ const RegistrationForm = ({ onSubmit }) => {
             setValue={handleChange}
             show={showPassword}
           />
-          <VisibilityToggle
-            fieldToHide={showPassword}
-            hideField={setShowPassword}
-          />
         </div>
 
         <div className="relative">
@@ -116,15 +110,21 @@ const RegistrationForm = ({ onSubmit }) => {
             setValue={handleChange}
             show={showConfirmPassword}
           />
-          <VisibilityToggle
-            fieldToHide={showConfirmPassword}
-            hideField={setShowConfirmPassword}
-          />
         </div>
       </div>
 
-      <SubmitBtn text="Register" />
-      <RedireqtionBtn text="Already member?" btnText="Log in" url="/login" />
+      <button
+        type="submit"
+        className="mt-6 h-[41px] w-[554px] cursor-pointer rounded-[10px] bg-orange-600 px-5 py-2.5 text-white hover:bg-orange-700"
+      >
+        Register
+      </button>
+      <p className="mt-4 w-full text-center text-[14px] text-gray-600">
+        Already member?{" "}
+        <Link to={{ pathname: "/login" }} className="text-[#FF4000]">
+          Log in
+        </Link>
+      </p>
     </form>
   );
 };

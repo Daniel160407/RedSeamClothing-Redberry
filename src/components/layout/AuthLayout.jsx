@@ -1,4 +1,4 @@
-import AuthorizationNavbar from "../navigation/AuthorizationNavbar";
+import AuthorizationNavbar from "./AuthorizationNavbar";
 
 const AuthLayout = ({ children }) => {
   return (

@@ -1,11 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import NavLoginBtn from "../uiComponents/NavLoginBtn";
 import Cookies from "js-cookie";
 import ArrowIcon from "/svg/Arrow.svg";
+import DefaultAvatarIcon from "../../icons/DefaultAvatarIcon";
+import CartIcon from "../../icons/CartIcon";
+import Button from "../uiComponents/Button";
+import LogoIcon from "../../icons/LogoIcon";
+import DarkCartIcon from "../../icons/DarkCartIcon";
 
 const AuthorizationNavbar = () => {
   const navigate = useNavigate();
-  const loggedIn = !!Cookies.get("token");
+  const isLoggedIn = !!Cookies.get("token");
 
   const onLogoClick = () => {
     navigate("/products");
@@ -21,26 +25,25 @@ const AuthorizationNavbar = () => {
         className="ml-20 flex cursor-pointer items-center space-x-3"
         onClick={onLogoClick}
       >
-        <img
-          src="/images/Logo.jpg"
-          alt="Logo"
-          className="h-[24px] w-[24px] object-contain"
-        />
+        <LogoIcon />
         <p className="font-100 text-[16px] font-semibold text-gray-900">
           RedSeam Clothing
         </p>
       </div>
 
-      {!loggedIn ? (
+      {!isLoggedIn ? (
         <div>
-          <NavLoginBtn onClick={onLoginClick} />
+          <Button
+            icon={DefaultAvatarIcon}
+            title={"Log in"}
+            style="flex cursor-pointer items-center gap-[20px] rounded-lg px-4 py-2 transition-colors duration-200"
+            onClick={onLoginClick}
+          />
         </div>
       ) : (
         <div className="mr-20 flex items-center space-x-6">
-          <button>
-            <img src="/images/Cart.jpg" alt="Cart" className="h-6 w-6" />
-          </button>
-
+          <Button icon={DarkCartIcon} onClick />
+      
           <div className="flex cursor-pointer items-center space-x-2">
             <img
               src={Cookies.get("profile_photo") ?? "/images/Avatar.jpg"}

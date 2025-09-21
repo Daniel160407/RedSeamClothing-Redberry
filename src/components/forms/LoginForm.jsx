@@ -1,8 +1,6 @@
 import { useState } from "react";
 import Input from "../uiComponents/Input";
-import VisibilityToggle from "../uiComponents/VisibilityToggle";
-import SubmitBtn from "../uiComponents/SubmitBtn";
-import RedireqtionBtn from "../uiComponents/RedirectionBtn";
+import { Link } from "react-router-dom";
 
 const LoginForm = ({ onSubmit }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -21,14 +19,15 @@ const LoginForm = ({ onSubmit }) => {
   };
 
   return (
-    <div className="w-[554px] mx-auto p-5">
+    <div className="mx-auto w-[554px] p-5">
       <h1 className="mb-5 text-[42px] font-semibold text-gray-800">Log in</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">  
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <Input
           value={formData.email}
           setValue={handleChange}
           name="email"
           placeholder={"Email *"}
+          type={'email'}
         />
         <div className="relative w-[554px]">
           <Input
@@ -38,14 +37,20 @@ const LoginForm = ({ onSubmit }) => {
             show={showPassword}
             placeholder="Password *"
           />
-          <VisibilityToggle
-            fieldToHide={showPassword}
-            hideField={setShowPassword}
-          />
         </div>
-        <SubmitBtn text="Log in" />
+        <button
+          type="submit"
+          className="mt-6 h-[41px] w-[554px] cursor-pointer rounded-[10px] bg-orange-600 px-5 py-2.5 text-white hover:bg-orange-700"
+        >
+          Log in
+        </button>
       </form>
-      <RedireqtionBtn text="Not a member?" btnText="Register" url="/register" />
+      <p className="mt-4 w-full text-center text-[14px] text-gray-600">
+        Not a memeber?{" "}
+        <Link to={{ pathname: "/register" }} className="text-[#FF4000]">
+          Register
+        </Link>
+      </p>
     </div>
   );
 };
