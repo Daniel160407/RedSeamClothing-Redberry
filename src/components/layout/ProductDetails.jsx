@@ -1,24 +1,29 @@
-import { useCallback, memo } from 'react';
+import { useCallback, memo } from "react";
 import Button from "../uiComponents/Button";
 import PulsingInfo from "../uiComponents/PulsingInfo";
 import QuantityDropdown from "../uiComponents/QuantityDropdown";
+import CartIcon from "../icons/CartIcon";
 
 const ProductsDetailsList = ({
   productInfo,
   productSettings,
   setProductSettings,
   onColorChange,
+  onAddToCart,
 }) => {
-  const handleSetting = useCallback((setting, value) => {
-    setProductSettings(prevSettings => ({ 
-      ...prevSettings, 
-      [setting]: value 
-    }));
-  }, [setProductSettings]);
+  const handleSetting = useCallback(
+    (setting, value) => {
+      setProductSettings((prevSettings) => ({
+        ...prevSettings,
+        [setting]: value,
+      }));
+    },
+    [setProductSettings],
+  );
 
   const getDisplayColor = useCallback((color) => {
-    return color.includes(" ") 
-      ? color.split(" ")[color.split(" ").length - 1] 
+    return color.includes(" ")
+      ? color.split(" ")[color.split(" ").length - 1]
       : color;
   }, []);
 
@@ -32,7 +37,7 @@ const ProductsDetailsList = ({
     available_colors = [],
     available_sizes = [],
     brand = {},
-    description = "No description available"
+    description = "No description available",
   } = productInfo;
 
   const { image: brandImage, name: brandName } = brand;
@@ -46,9 +51,9 @@ const ProductsDetailsList = ({
 
       <div className="flex flex-col gap-[48px]">
         <div className="flex flex-col gap-[16px]">
-          <p className="text-[16px]">Color: {productSettings.color}</p>
+          <p className="text-[16px]">Color: {available_colors ? productSettings.color : ''}</p>
           <div className="flex gap-[13px]">
-            {available_colors.map((color, index) => (
+            {available_colors && available_colors.map((color, index) => (
               <div
                 key={`${color}-${index}`}
                 className="h-[38px] w-[38px] cursor-pointer rounded-full"
@@ -61,30 +66,22 @@ const ProductsDetailsList = ({
                 role="button"
                 tabIndex={0}
                 aria-label={`Select color: ${color}`}
-                onKeyPress={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    handleSetting("color", color);
-                    onColorChange?.(index);
-                  }
-                }}
               />
             ))}
           </div>
         </div>
 
         <div className="flex flex-col gap-[16px]">
-          <p>Size: {productSettings.size}</p>
+          <p>Size: {available_sizes ? productSettings.size : ''}</p>
           <div className="flex gap-2">
-            {available_sizes.map((size, index) => (
+            {available_sizes && available_sizes.map((size, index) => (
               <div
                 key={`${size}-${index}`}
-                className={`
-                  h-[42px] w-[70px] cursor-pointer rounded-[10px] border pt-[9px] pr-[16px] pb-[9px] pl-[16px] text-center
-                  ${productSettings.size === size
+                className={`h-[42px] w-[70px] cursor-pointer rounded-[10px] border pt-[9px] pr-[16px] pb-[9px] pl-[16px] text-center ${
+                  productSettings.size === size
                     ? "border-2 border-[#10151F]"
                     : "border border-[#E1DFE1] hover:border-2 hover:border-black"
-                  }
-                `}
+                } `}
                 onClick={() => handleSetting("size", size)}
                 role="button"
                 tabIndex={0}
@@ -106,7 +103,12 @@ const ProductsDetailsList = ({
         </div>
 
         <div>
-          <Button title="Add to cart" paddingY="16px" paddingX="60px" />
+          <Button
+            icon={CartIcon}
+            title={"Add to cart"}
+            style="text-[#FFFFFF] flex h-[50px] w-[704px] cursor-pointer items-center justify-center gap-[10px] rounded-[10px] bg-[#FF4000] text-center"
+            onClick={onAddToCart}
+          />
         </div>
 
         <div className="border-[1px] border-[#E1DFE1]"></div>
@@ -115,10 +117,10 @@ const ProductsDetailsList = ({
           <div className="flex justify-between">
             <p className="text-[20px]">Details</p>
             {brandImage && (
-              <img 
-                src={brandImage} 
-                className="h-[61px] w-[109px]" 
-                alt={brandName || "Brand logo"} 
+              <img
+                src={brandImage}
+                className="h-[61px] w-[109px]"
+                alt={brandName || "Brand logo"}
               />
             )}
           </div>

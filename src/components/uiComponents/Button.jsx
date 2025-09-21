@@ -1,19 +1,23 @@
-import CartIcon from "../icons/CartIcon";
+const Button = ({
+  icon: Icon,
+  title,
+  style = "",
+  iconPosition = "l",
+  onClick,
+}) => {
+  let flexDirection = "flex-col";
+  if (iconPosition === "b") flexDirection = "flex-col-reverse";
+  if (iconPosition === "l") flexDirection = "flex-row";
+  if (iconPosition === "r") flexDirection = "flex-row-reverse";
 
-const Button = ({ title, paddingY, paddingX }) => {
   return (
-    <div
-      className="flex h-[50px] w-[704px] cursor-pointer items-center justify-center gap-[10px] rounded-[10px] bg-[#FF4000] text-center"
-      style={{
-        paddingTop: paddingY,
-        paddingBottom: paddingY,
-        paddingLeft: paddingX,
-        paddingRight: paddingX,
-      }}
+    <button
+      className={`flex items-center justify-center gap-2 ${flexDirection} ${style}`}
+      onClick={onClick}
     >
-      <CartIcon />
-      <p className="text-[#FFFFFF]">{title}</p>
-    </div>
+      {Icon && <Icon />}
+      {title && <p>{title}</p>}
+    </button>
   );
 };
 

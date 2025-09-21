@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import AuthorizationNavbar from "../components/navigation/AuthorizationNavbar";
 import ProductsHeader from "../components/uiComponents/ProductsHeader";
 import useAxios from "../hooks/UseAxios";
 import ProductsList from "../components/lists/ProductsList";
 import PageSelector from "../components/uiComponents/PageSelector";
 import { useNavigate } from "react-router-dom";
+import AuthorizationNavbar from "../components/layout/AuthorizationNavbar";
 
 const Products = () => {
   const [products, setProducts] = useState([]);

@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import useAxios from "../hooks/UseAxios";
 import ProductImagesList from "../components/lists/ProductImagesList";
-import ProductsDetailsList from "../components/lists/ProductDetailsList";
-import AuthorizationNavbar from "../components/navigation/AuthorizationNavbar";
+import ProductsDetailsList from "../components/layout/ProductDetails";
+import AuthorizationNavbar from "../components/layout/AuthorizationNavbar";
+import Cookies from "js-cookie";
 
 const ProductInfo = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -12,7 +13,7 @@ const ProductInfo = () => {
 
   const [productSettings, setProductSettings] = useState({
     color: searchParams.get("color") ?? "",
-    size: "",
+    size: "M",
     quantity: "1",
   });
 
@@ -24,6 +25,18 @@ const ProductInfo = () => {
     const params = new URLSearchParams(searchParams);
     params.set("color", color);
     setSearchParams(params);
+  };
+
+  const handleAddToCart = async () => {
+    try {
+      await useAxios.post(`/cart/products/${productInfo.id}`, productSettings, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("token") || ""}`,
+        },
+      });
+    } catch (err) {
+      console.log("Request failed with error: " + err);
+    }
   };
 
   useEffect(() => {
@@ -56,28 +69,29 @@ const ProductInfo = () => {
 
   return (
     <>
-    <AuthorizationNavbar />
-    <div className="flex">
-      <div>
-        <p className="absolute top-[110px] left-[100px] text-[14px]">
-          Listing / Product
-        </p>
-        <ProductImagesList
-          images={productInfo.images}
-          onImageClick={setActiveImage}
+      <AuthorizationNavbar />
+      <div className="flex">
+        <div>
+          <p className="absolute top-[110px] left-[100px] text-[14px]">
+            Listing / Product
+          </p>
+          <ProductImagesList
+            images={productInfo.images}
+            onImageClick={setActiveImage}
+          />
+        </div>
+        <img
+          src={activeImage}
+          className="top-180px absolute left-[245px] max-w-[703px]"
+        />
+        <ProductsDetailsList
+          productInfo={productInfo}
+          productSettings={productSettings}
+          setProductSettings={setProductSettings}
+          onColorChange={handleColorChange}
+          onAddToCart={handleAddToCart}
         />
       </div>
-      <img
-        src={activeImage}
-        className="top-180px absolute left-[245px] max-w-[703px]"
-      />
-      <ProductsDetailsList
-        productInfo={productInfo}
-        productSettings={productSettings}
-        setProductSettings={setProductSettings}
-        onColorChange={handleColorChange}
-      />
-    </div>
     </>
   );
 };

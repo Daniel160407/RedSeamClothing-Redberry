@@ -1,7 +1,7 @@
-import CartSvg from "/svg/Cart.svg";
-
 const CartIcon = () => {
-  return <img src={CartSvg} alt="cartIcon" className="h-[18px] w-[19px]" />;
+  return (
+    <img src="/svg/Cart.svg" alt="cartIcon" className={`w-24px] h-[24px]`} />
+  );
 };
 
 export default CartIcon;
