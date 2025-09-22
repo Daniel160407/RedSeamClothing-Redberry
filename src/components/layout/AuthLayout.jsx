@@ -1,6 +1,6 @@
 import AuthorizationNavbar from "./AuthorizationNavbar";
 
-const AuthLayout = ({ children }) => {
+const AuthLayout = ({ title, children }) => {
   return (
     <>
       <AuthorizationNavbar />
@@ -14,7 +14,13 @@ const AuthLayout = ({ children }) => {
 
         <div className="flex w-[554px] items-center justify-center p-8 lg:w-1/2">
           <div className="w-full max-w-md rounded-2xl bg-white">
-            {children}
+            <div className="mx-auto w-[554px] p-5">
+              <h1 className="mb-5 text-[42px] font-semibold text-gray-800">
+                {title}
+              </h1>
+
+              {children}
+            </div>
           </div>
         </div>
       </div>

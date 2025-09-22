@@ -3,8 +3,14 @@ import LoginForm from "../components/forms/LoginForm";
 import useAxios from "../hooks/UseAxios";
 import AuthLayout from "../components/layout/AuthLayout";
 import setCookies from "../utils/SetCookies";
+import { useState } from "react";
 
 const Login = () => {
+  const [error, setError] = useState({
+    email: "",
+    password: "",
+  });
+
   const navigate = useNavigate();
 
   const onSubmit = async (formData) => {
@@ -15,14 +21,25 @@ const Login = () => {
         navigate("/products");
       }
     } catch (err) {
-      console.error("Request failed with error: " + err);
+      if (err.response?.status === 422) {
+        const errors = err.response.data.errors || {};
+
+        setError({
+          email: errors.email || "",
+          password: errors.password || "",
+        });
+      } else if (err.response?.status === 401) {
+        setError({
+          password: "Invalid email or password",
+        });
+      }
     }
   };
 
   return (
     <>
-      <AuthLayout>
-        <LoginForm onSubmit={onSubmit} />
+      <AuthLayout title={"Log in"}>
+        <LoginForm onSubmit={onSubmit} error={error} setError={setError} />
       </AuthLayout>
     </>
   );

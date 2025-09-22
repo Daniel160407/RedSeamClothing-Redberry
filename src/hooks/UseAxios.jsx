@@ -21,18 +21,14 @@ const useAxios = async (url, method, data = null, config = {}) => {
     return response;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      const errorData = error.response?.data || error.message;
       console.error("API request failed:", {
         url,
         method,
         status: error.response?.status,
-        error: errorData,
+        error: error.response?.data || error.message,
       });
-      throw new Error(
-        errorData.message || `API request to ${url} failed: ${error.message}`
-      );
+      throw error;
     } else {
-      console.error("Unexpected error:", error);
       throw new Error("An unexpected error occurred");
     }
   }

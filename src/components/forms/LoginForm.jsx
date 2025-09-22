@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Input from "../uiComponents/Input";
 import { Link } from "react-router-dom";
+import validateCredentials from "../../utils/ValidateCredentials";
 
-const LoginForm = ({ onSubmit }) => {
-  const [showPassword, setShowPassword] = useState(false);
+const LoginForm = ({ onSubmit, error, setError }) => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -11,7 +11,18 @@ const LoginForm = ({ onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+
+    const errors = validateCredentials(formData);
+
+    if (
+      errors.email === "" &&
+      errors.username === "" &&
+      errors.password === ""
+    ) {
+      onSubmit(formData);
+    } else {
+      setError(errors);
+    }
   };
 
   const handleChange = (e) => {
@@ -19,23 +30,27 @@ const LoginForm = ({ onSubmit }) => {
   };
 
   return (
-    <div className="mx-auto w-[554px] p-5">
-      <h1 className="mb-5 text-[42px] font-semibold text-gray-800">Log in</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-[24px]">
         <Input
           value={formData.email}
           setValue={handleChange}
           name="email"
           placeholder={"Email *"}
-          type={'email'}
+          type={"email"}
+          style={error.email !== "" ? "border-[#FF4000]" : "border-[#E1DFE1]"}
+          errorMessage={error.email ?? null}
         />
         <div className="relative w-[554px]">
           <Input
             value={formData.password}
             setValue={handleChange}
             name="password"
-            show={showPassword}
             placeholder="Password *"
+            style={
+              error.password !== "" ? "border-[#FF4000]" : "border-[#E1DFE1]"
+            }
+            errorMessage={error.password ?? null}
           />
         </div>
         <button
@@ -51,7 +66,7 @@ const LoginForm = ({ onSubmit }) => {
           Register
         </Link>
       </p>
-    </div>
+    </>
   );
 };
 

@@ -2,13 +2,13 @@ const Button = ({
   icon: Icon,
   title,
   style = "",
-  iconPosition = "l",
+  iconPosition = "LEFT",
   onClick,
 }) => {
   let flexDirection = "flex-col";
-  if (iconPosition === "b") flexDirection = "flex-col-reverse";
-  if (iconPosition === "l") flexDirection = "flex-row";
-  if (iconPosition === "r") flexDirection = "flex-row-reverse";
+  if (iconPosition === "BOTTOM") flexDirection = "flex-col-reverse";
+  if (iconPosition === "LEFT") flexDirection = "flex-row";
+  if (iconPosition === "RIGHT") flexDirection = "flex-row-reverse";
 
   return (
     <button

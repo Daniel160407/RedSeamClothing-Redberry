@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import ArrowIcon from "/svg/Arrow.svg";
 import DefaultAvatarIcon from "../../icons/DefaultAvatarIcon";
-import CartIcon from "../../icons/CartIcon";
 import Button from "../uiComponents/Button";
 import LogoIcon from "../../icons/LogoIcon";
 import DarkCartIcon from "../../icons/DarkCartIcon";
@@ -42,7 +41,7 @@ const AuthorizationNavbar = () => {
         </div>
       ) : (
         <div className="mr-20 flex items-center space-x-6">
-          <Button icon={DarkCartIcon} onClick />
+          <Button icon={DarkCartIcon} />
       
           <div className="flex cursor-pointer items-center space-x-2">
             <img
