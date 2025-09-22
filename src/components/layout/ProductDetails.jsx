@@ -96,7 +96,7 @@ const ProductsDetailsList = ({
         <div className="flex flex-col gap-[16px]">
           <p>Quantity</p>
           <QuantityDropdown
-            options={["1", "2", "3", "4", "5"]}
+            options={["1", "2", "3", "4", "5", '6', '7', '8', '9', '10']}
             value={productSettings.quantity}
             onChange={handleSetting}
           />

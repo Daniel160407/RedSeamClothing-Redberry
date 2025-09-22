@@ -7,8 +7,10 @@ const CartProduct = ({ product, onQuantityChange, onDelete }) => {
 
   const handleQuantityChange = (num) => {
     const newQuantityValue = quantity + num;
-    setQuantity(newQuantityValue);
-    onQuantityChange(product.id, newQuantityValue);
+    if (newQuantityValue > 0) {
+      setQuantity(newQuantityValue);
+      onQuantityChange(product.id, newQuantityValue);
+    }
   };
 
   return (

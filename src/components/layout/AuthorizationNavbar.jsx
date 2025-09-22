@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import ArrowIcon from "/svg/Arrow.svg";
 import DefaultAvatarIcon from "../icons/DefaultAvatarIcon";
 import Button from "../uiComponents/Button";
 import LogoIcon from "../icons/LogoIcon";
 import DarkCartIcon from "../icons/DarkCartIcon";
 import { useState } from "react";
 import ShoppingCart from "./ShoppingCart";
+import DownArrowIcon from "../icons/DownArrowIcon";
 
 const AuthorizationNavbar = () => {
   const [showShoppingCart, setShowShoppingCart] = useState(false);
@@ -57,13 +57,11 @@ const AuthorizationNavbar = () => {
                 src={Cookies.get("profile_photo") ?? "/images/Avatar.jpg"}
                 className="h-10 w-10 rounded-full object-cover"
               />
-              <button>
-                <img
-                  src={ArrowIcon}
-                  alt="Dropdown"
-                  className="h-5 w-5 cursor-pointer"
-                />
-              </button>
+              <Button
+                icon={DownArrowIcon}
+                style="h-5 w-5 cursor-pointer"
+                onClick
+              />
             </div>
           </div>
         )}

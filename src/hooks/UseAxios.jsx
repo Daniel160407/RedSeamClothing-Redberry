@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -12,6 +13,13 @@ const apiClient = axios.create({
 
 const useAxios = async (url, method, data = null, config = {}) => {
   try {
+    if (Cookies.get("token")) {
+      config = {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("token") || ""}`,
+        },
+      };
+    }
     const response = await apiClient.request({
       url,
       method,
@@ -20,6 +28,11 @@ const useAxios = async (url, method, data = null, config = {}) => {
     });
     return response;
   } catch (error) {
+    if (error.response?.status === 401) {
+      Object.keys(Cookies.get()).forEach((cookieName) => {
+        Cookies.remove(cookieName);
+      });
+    }
     if (axios.isAxiosError(error)) {
       const errorData = error.response?.data || error.message;
       console.error("API request failed:", {
@@ -29,7 +42,7 @@ const useAxios = async (url, method, data = null, config = {}) => {
         error: errorData,
       });
       throw new Error(
-        errorData.message || `API request to ${url} failed: ${error.message}`
+        errorData.message || `API request to ${url} failed: ${error.message}`,
       );
     } else {
       console.error("Unexpected error:", error);
@@ -41,7 +54,8 @@ const useAxios = async (url, method, data = null, config = {}) => {
 useAxios.get = (url, config = {}) => useAxios(url, "get", null, config);
 useAxios.post = (url, data, config = {}) => useAxios(url, "post", data, config);
 useAxios.put = (url, data, config = {}) => useAxios(url, "put", data, config);
-useAxios.patch = (url, data, config = {}) => useAxios(url, "patch", data, config);
+useAxios.patch = (url, data, config = {}) =>
+  useAxios(url, "patch", data, config);
 useAxios.delete = (url, config = {}) => useAxios(url, "delete", null, config);
 
 export default useAxios;

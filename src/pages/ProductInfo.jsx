@@ -4,7 +4,6 @@ import useAxios from "../hooks/UseAxios";
 import ProductImagesList from "../components/lists/ProductImagesList";
 import ProductsDetailsList from "../components/layout/ProductDetails";
 import AuthorizationNavbar from "../components/layout/AuthorizationNavbar";
-import Cookies from "js-cookie";
 
 const ProductInfo = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -29,11 +28,7 @@ const ProductInfo = () => {
 
   const handleAddToCart = async () => {
     try {
-      await useAxios.post(`/cart/products/${productInfo.id}`, productSettings, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get("token") || ""}`,
-        },
-      });
+      await useAxios.post(`/cart/products/${productInfo.id}`, productSettings);
     } catch (err) {
       console.log("Request failed with error: " + err);
     }

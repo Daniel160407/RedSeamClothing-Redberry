@@ -14,24 +14,30 @@ const ShoppingCart = ({ setShowCart }) => {
 
   const handleQuantityChange = async (productId, quantity) => {
     try {
-      const response = await useAxios.patch(
-        `/cart/products/${productId}`,
-        { quantity },
-        {
-          headers: {
-            Authorization: `Bearer ${Cookies.get("token") || ""}`,
-          },
-        },
-      );
+      const response = await useAxios.patch(`/cart/products/${productId}`, {
+        quantity,
+      });
 
       if (response?.status === 200) {
-        setCartData((prevCartData) =>
-          prevCartData.map((product) =>
+        setCartData((prevCartData) => {
+          const updatedCart = prevCartData.map((product) =>
             product.id === productId
-              ? { ...product, quantity: response.data.quantity }
+              ? {
+                  ...product,
+                  quantity: response.data.quantity,
+                  total_price: response.data.total_price,
+                }
               : product,
-          ),
-        );
+          );
+
+          const newTotal = updatedCart.reduce(
+            (sum, product) => sum + product.total_price,
+            0,
+          );
+          setTotalPrice(newTotal);
+
+          return updatedCart;
+        });
       }
     } catch (err) {
       console.error("Request failed with error message: " + err);
@@ -40,11 +46,7 @@ const ShoppingCart = ({ setShowCart }) => {
 
   const handleDelete = async (productId) => {
     try {
-      const response = await useAxios.delete(`/cart/products/${productId}`, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get("token") || ""}`,
-        },
-      });
+      const response = await useAxios.delete(`/cart/products/${productId}`);
 
       if (response?.status === 204) {
         setCartData((prevCartData) =>
