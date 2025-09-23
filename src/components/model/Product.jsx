@@ -1,6 +1,6 @@
 const Product = ({ product, onClick }) => {
   return (
-    <div className="flex w-64 flex-col" onClick={() => onClick(product.id)}>
+    <div className="flex w-64 flex-col cursor-pointer" onClick={() => onClick(product.id)}>
       <img
         src={product.cover_image}
         alt={product.name}

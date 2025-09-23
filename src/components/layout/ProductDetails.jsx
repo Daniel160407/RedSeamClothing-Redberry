@@ -4,7 +4,7 @@ import PulsingInfo from "../uiComponents/PulsingInfo";
 import QuantityDropdown from "../uiComponents/QuantityDropdown";
 import CartIcon from "../icons/CartIcon";
 
-const ProductsDetailsList = ({
+const ProductDetails = ({
   productInfo,
   productSettings,
   setProductSettings,
@@ -134,4 +134,4 @@ const ProductsDetailsList = ({
   );
 };
 
-export default memo(ProductsDetailsList);
+export default memo(ProductDetails);

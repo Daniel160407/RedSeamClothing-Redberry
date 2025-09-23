@@ -1,14 +1,10 @@
-import { useState } from "react";
 import MinusIcon from "../icons/MinusIcon";
 import PlusIcon from "../icons/PlusIcon";
 
 const CartProduct = ({ product, onQuantityChange, onDelete }) => {
-  const [quantity, setQuantity] = useState(product.quantity);
-
   const handleQuantityChange = (num) => {
-    const newQuantityValue = quantity + num;
+    const newQuantityValue = product.quantity + num;
     if (newQuantityValue > 0) {
-      setQuantity(newQuantityValue);
       onQuantityChange(product.id, newQuantityValue);
     }
   };
@@ -23,7 +19,7 @@ const CartProduct = ({ product, onQuantityChange, onDelete }) => {
         <div className="flex flex-col gap-[8px]">
           <div className="flex w-[343px] justify-between">
             <p className="text-[14px]">{product.name}</p>
-            <p className="text-[18px]">$ {product.price}</p>
+            <p className="text-[18px]">$ {product.total_price}</p>
           </div>
           <p>{product.color}</p>
           <p>{product.size}</p>
@@ -37,7 +33,7 @@ const CartProduct = ({ product, onQuantityChange, onDelete }) => {
               <MinusIcon />
             </div>
             <p className="min-w-[20px] text-center text-sm font-medium">
-              {quantity}
+              {product.quantity}
             </p>
             <div
               className="flex h-[16px] w-[16px] cursor-pointer items-center justify-center"
