@@ -1,5 +1,5 @@
 import { useState } from "react";
-import EyeIcon from "../../icons/EyeIcon";
+import EyeIcon from "../icons/EyeIcon";
 import Button from "./Button";
 
 const Input = ({

@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import ArrowIcon from "/svg/Arrow.svg";
-import DefaultAvatarIcon from "../../icons/DefaultAvatarIcon";
+import DefaultAvatarIcon from "../icons/DefaultAvatarIcon";
 import Button from "../uiComponents/Button";
-import LogoIcon from "../../icons/LogoIcon";
-import DarkCartIcon from "../../icons/DarkCartIcon";
+import LogoIcon from "../icons/LogoIcon";
+import DarkCartIcon from "../icons/DarkCartIcon";
 
 const AuthorizationNavbar = () => {
   const navigate = useNavigate();
@@ -42,7 +42,7 @@ const AuthorizationNavbar = () => {
       ) : (
         <div className="mr-20 flex items-center space-x-6">
           <Button icon={DarkCartIcon} />
-      
+
           <div className="flex cursor-pointer items-center space-x-2">
             <img
               src={Cookies.get("profile_photo") ?? "/images/Avatar.jpg"}
