@@ -1,9 +1,9 @@
-import AuthorizationNavbar from "./AuthorizationNavbar";
+import Navbar from "./Navbar";
 
 const AuthLayout = ({ title, children }) => {
   return (
     <>
-      <AuthorizationNavbar />
+      <Navbar />
       <div className="flex">
         <div className="hidden w-1/2 items-center justify-center bg-gray-100 lg:flex">
           <img

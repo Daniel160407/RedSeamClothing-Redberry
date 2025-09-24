@@ -53,7 +53,8 @@ const ProductDetails = ({
       <div className="flex flex-col gap-[48px]">
         <div className="flex flex-col gap-[16px]">
           <p className="text-[16px]">
-            Color: {available_colors ? productSettings.color : ""}
+            Color:{" "}
+            {available_colors ? productSettings.color : "No available colors"}
           </p>
           <div className="flex gap-[13px]">
             {available_colors &&
@@ -76,7 +77,10 @@ const ProductDetails = ({
         </div>
 
         <div className="flex flex-col gap-[16px]">
-          <p>Size: {available_sizes ? productSettings.size : ""}</p>
+          <p>
+            Size:{" "}
+            {available_sizes ? productSettings.size : "No available sizes"}
+          </p>
           <div className="flex gap-2">
             {available_sizes &&
               available_sizes.map((size, index) => (
@@ -105,7 +109,7 @@ const ProductDetails = ({
             iconPosition="RIGHT"
             options={["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]}
             defaultValue={productSettings.quantity}
-            onChange={(value) => handleSetting('quantity', value)}
+            onChange={(value) => handleSetting("quantity", value)}
             buttonStyle="flex h-[42px] w-[70px] cursor-pointer items-center rounded-[10px] border border-[#E1DFE1] py-[9px] px-[16px] gap-[10px] text-gray-800 text-center hover:border-2 hover:border-black"
             contentStyle="absolute z-10 mt-1 w-[70px] rounded-[10px] border border-gray-300 bg-white shadow-lg"
           />

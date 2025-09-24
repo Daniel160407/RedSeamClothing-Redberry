@@ -114,8 +114,8 @@ const Products = () => {
         )}
         <ProductsList products={products} onProductClick={handleProductClick} />
         <PageSelector
-          page={page}
-          setPage={handlePageSelect}
+          currentPage={page}
+          onPageChange={handlePageSelect}
           totalPages={lastPage}
         />
       </div>

@@ -63,7 +63,6 @@ const Navbar = () => {
               <Button
                 icon={DownArrowIcon}
                 style="h-5 w-5 cursor-pointer"
-                onClick
               />
             </div>
           </div>

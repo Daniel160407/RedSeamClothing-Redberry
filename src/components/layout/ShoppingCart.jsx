@@ -21,15 +21,15 @@ const ShoppingCart = ({ setShowCart }) => {
 
       if (response?.status === 200) {
         setCartData((prevCartData) => {
-          const updatedCart = prevCartData.map((product) =>
-            product.id === productId
+          const updatedCart = prevCartData.map((product) => {
+            return product.id === productId
               ? {
                   ...product,
-                  quantity: response.data.quantity,
-                  total_price: response.data.total_price,
+                  quantity: response.data[0].quantity,
+                  total_price: response.data[0].total_price,
                 }
-              : product,
-          );
+              : product;
+          });
 
           const newTotal = updatedCart.reduce(
             (sum, product) => sum + product.total_price,
@@ -56,9 +56,24 @@ const ShoppingCart = ({ setShowCart }) => {
       const response = await useAxios.delete(`/cart/products/${productId}`);
 
       if (response?.status === 204) {
-        setCartData((prevCartData) =>
-          prevCartData.filter((product) => product.id !== productId),
-        );
+        setCartData((prevCartData) => {
+          const updatedCart = prevCartData.filter((product) => product.id !== productId);
+          
+          // Calculate new total price and products amount
+          const newTotal = updatedCart.reduce(
+            (sum, product) => sum + product.total_price,
+            0,
+          );
+          const newProductsAmount = updatedCart.reduce(
+            (total, product) => total + product.quantity,
+            0,
+          );
+          
+          setTotalPrice(newTotal);
+          setProductsAmount(newProductsAmount);
+          
+          return updatedCart;
+        });
       }
     } catch (err) {
       console.error("Request failed with error message: " + err);

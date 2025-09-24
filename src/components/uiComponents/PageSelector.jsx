@@ -1,98 +1,108 @@
 import React from "react";
 
-const PageSelector = ({ page, setPage, totalPages, maxVisiblePages = 5 }) => {
-  const handlePageChange = (newPage) => {
-    if (newPage < 1 || newPage > totalPages || newPage === page) return;
-    setPage(newPage);
-  };
-
-  const generatePageNumbers = () => {
-    if (totalPages <= 7) {
-      return Array.from({ length: totalPages }, (_, i) => i + 1);
-    }
-
-    const pages = [];
-    pages.push(1);
-
-    let startPage = Math.max(2, page - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(totalPages - 1, startPage + maxVisiblePages - 1);
-
-    if (page <= 4) {
-      endPage = 5;
-    }
-
-    if (page >= totalPages - 3) {
-      startPage = totalPages - 4;
-    }
-
-    if (startPage > 2) {
-      pages.push("ellipsis-start");
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(i);
-    }
-
-    if (endPage < totalPages - 1) {
-      pages.push("ellipsis-end");
-    }
-
-    pages.push(totalPages);
-
-    return pages;
-  };
-
-  const renderPageItem = (pageNumber) => {
-    if (pageNumber === "ellipsis-start" || pageNumber === "ellipsis-end") {
-      return (
-        <span
-          key={pageNumber}
-          className="px-3 py-2 font-medium text-gray-500 select-none"
-        >
-          ...
-        </span>
-      );
-    }
-
-    const isActive = page === pageNumber;
-
-    return (
-      <button
-        key={pageNumber}
-        onClick={() => handlePageChange(pageNumber)}
-        disabled={isActive}
-        className={`h-10 w-10 rounded-lg border font-medium transition-all duration-200 ${
-          isActive
-            ? "cursor-default border-2 border-[#FF4000] text-[#FF4000]"
-            : "cursor-pointer border-gray-300 text-gray-700 hover:border-gray-400 hover:bg-gray-100"
-        } focus:ring-2 focus:ring-blue-300 focus:ring-offset-1 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50`}
-      >
-        {pageNumber}
-      </button>
-    );
-  };
-
+const PageSelector = ({
+  currentPage,
+  totalPages,
+  onPageChange,
+  showPrevNext = true,
+  siblingCount = 1,
+  boundaryCount = 2,
+}) => {
   if (totalPages <= 1) return null;
 
+  const getVisiblePages = () => {
+    const pages = [];
+    const startPages = [];
+    const endPages = [];
+
+    for (let i = 1; i <= Math.min(boundaryCount, totalPages); i++) {
+      startPages.push(i);
+    }
+
+    for (
+      let i = Math.max(totalPages - boundaryCount + 1, boundaryCount + 1);
+      i <= totalPages;
+      i++
+    ) {
+      endPages.push(i);
+    }
+
+    const siblingsStart = Math.max(
+      currentPage - siblingCount,
+      boundaryCount + 1,
+    );
+    const siblingsEnd = Math.min(
+      currentPage + siblingCount,
+      totalPages - boundaryCount,
+    );
+
+    pages.push(...startPages);
+
+    if (siblingsStart > boundaryCount + 1) {
+      pages.push("...");
+    }
+
+    for (let i = siblingsStart; i <= siblingsEnd; i++) {
+      if (i > boundaryCount && i <= totalPages - boundaryCount) {
+        pages.push(i);
+      }
+    }
+
+    if (siblingsEnd < totalPages - boundaryCount) {
+      pages.push("...");
+    }
+
+    const finalPages = [...pages, ...endPages];
+
+    return finalPages;
+  };
+
+  const visiblePages = getVisiblePages();
+
   return (
-    <div className="flex items-center justify-center space-x-2 p-4">
-      <button
-        onClick={() => handlePageChange(page - 1)}
-        disabled={page === 1}
-        className="flex h-10 w-10 items-center justify-center rounded-lg text-gray-700 transition-all duration-200 hover:border-gray-400 hover:bg-gray-100 focus:ring-2 focus:ring-blue-300 focus:ring-offset-1 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-white"
-      >
-        ←
-      </button>
+    <div className={`flex items-center justify-center gap-2`}>
+      {showPrevNext && (
+        <button
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="flex h-8 w-8 items-center justify-center text-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
+          aria-label="Previous page"
+        >
+          ‹
+        </button>
+      )}
 
-      {generatePageNumbers().map(renderPageItem)}
+      {visiblePages.map((page, index) => (
+        <React.Fragment key={index}>
+          {page === "..." ? (
+            <span className="px-2 text-gray-500">...</span>
+          ) : (
+            <button
+              onClick={() => onPageChange(page)}
+              className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border text-base font-medium transition-colors ${
+                currentPage === page
+                  ? "border-[#FF4000] bg-white text-[#FF4000]"
+                  : "border-transparent bg-white text-gray-600 hover:border-gray-300"
+              }`}
+              aria-label={`Page ${page}`}
+              aria-current={currentPage === page ? "page" : undefined}
+            >
+              {page}
+            </button>
+          )}
+        </React.Fragment>
+      ))}
 
-      <button
-        onClick={() => handlePageChange(page + 1)}
-        disabled={page === totalPages}
-        className="flex h-10 w-10 items-center justify-center rounded-lg text-gray-700 transition-all duration-200 hover:border-gray-400 hover:bg-gray-100 focus:ring-2 focus:ring-blue-300 focus:ring-offset-1 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-white"
-      >
-        →
-      </button>
+      {showPrevNext && (
+        <button
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="flex h-8 w-8 items-center justify-center text-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
+          aria-label="Next page"
+        >
+          ›
+        </button>
+      )}
     </div>
   );
 };
