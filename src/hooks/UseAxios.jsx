@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -12,6 +13,13 @@ const apiClient = axios.create({
 
 const useAxios = async (url, method, data = null, config = {}) => {
   try {
+    if (Cookies.get("token")) {
+      config = {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("token") || ""}`,
+        },
+      };
+    }
     const response = await apiClient.request({
       url,
       method,
@@ -20,7 +28,13 @@ const useAxios = async (url, method, data = null, config = {}) => {
     });
     return response;
   } catch (error) {
+    if (error.response?.status === 401) {
+      Object.keys(Cookies.get()).forEach((cookieName) => {
+        Cookies.remove(cookieName);
+      });
+    }
     if (axios.isAxiosError(error)) {
+      const errorData = error.response?.data || error.message;
       console.error("API request failed:", {
         url,
         method,

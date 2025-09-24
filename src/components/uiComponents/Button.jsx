@@ -5,14 +5,16 @@ const Button = ({
   iconPosition = "LEFT",
   onClick,
 }) => {
-  let flexDirection = "flex-col";
-  if (iconPosition === "BOTTOM") flexDirection = "flex-col-reverse";
-  if (iconPosition === "LEFT") flexDirection = "flex-row";
-  if (iconPosition === "RIGHT") flexDirection = "flex-row-reverse";
+  const flexDirection = {
+    TOP: "flex-col",
+    BOTTOM: "flex-col-reverse",
+    LEFT: "flex-row",
+    RIGHT: "flex-row-reverse",
+  };
 
   return (
     <button
-      className={`flex items-center justify-center gap-2 ${flexDirection} ${style}`}
+      className={`flex items-center justify-center gap-2 ${flexDirection[iconPosition]} ${style}`}
       onClick={onClick}
     >
       {Icon && <Icon />}
