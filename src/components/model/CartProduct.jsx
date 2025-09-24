@@ -10,7 +10,7 @@ const CartProduct = ({ product, onQuantityChange, onDelete }) => {
   };
 
   return (
-    <div className="relative top-[134px] left-[40px] flex gap-[17px]">
+    <div className="flex gap-[17px]">
       <img
         src={product.cover_image}
         className="w-[100px] rounded-[10px] border border-[#E1DFE1]"
@@ -19,7 +19,7 @@ const CartProduct = ({ product, onQuantityChange, onDelete }) => {
         <div className="flex flex-col gap-[8px]">
           <div className="flex w-[343px] justify-between">
             <p className="text-[14px]">{product.name}</p>
-            <p className="text-[18px]">$ {product.total_price}</p>
+            <p className="text-[18px]">$ {product.price}</p>
           </div>
           <p>{product.color}</p>
           <p>{product.size}</p>

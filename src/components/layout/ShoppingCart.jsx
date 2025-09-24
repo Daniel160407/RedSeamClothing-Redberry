@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 const ShoppingCart = ({ setShowCart }) => {
   const [cartData, setCartData] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [productsAmount, setProductsAmount] = useState(0);
 
   const navigate = useNavigate();
 
@@ -35,6 +36,12 @@ const ShoppingCart = ({ setShowCart }) => {
             0,
           );
           setTotalPrice(newTotal);
+          setProductsAmount(() => {
+            return updatedCart.reduce(
+              (total, product) => total + product.quantity,
+              0,
+            );
+          });
 
           return updatedCart;
         });
@@ -71,6 +78,9 @@ const ShoppingCart = ({ setShowCart }) => {
         setTotalPrice(
           data.reduce((sum, product) => sum + product.total_price, 0),
         );
+        setProductsAmount(() => {
+          return data.reduce((total, product) => total + product.quantity, 0);
+        });
       } catch (error) {
         console.error("Failed to fetch cart data:", error);
       }
@@ -81,9 +91,9 @@ const ShoppingCart = ({ setShowCart }) => {
 
   return (
     <div className="fixed top-0 right-0 z-1000 h-[1080px] w-[540px] border-l border-[#E1DFE1] bg-[#f8f6f7]">
-      <div className="relative top-[41px] flex items-center justify-between px-[40px]">
+      <div className="flex items-center justify-between px-[40px] pt-[41px]">
         <p className="h-[30px] w-[180px] text-[20px]">
-          Shopping cart ({cartData.length})
+          Shopping cart ({productsAmount})
         </p>
         <div
           onClick={() => setShowCart(false)}
@@ -93,7 +103,7 @@ const ShoppingCart = ({ setShowCart }) => {
         </div>
       </div>
 
-      <div className="flex flex-col gap-[36px]">
+      <div className="flex max-h-[660px] flex-col gap-[36px] overflow-y-auto pt-[93px] pl-[40px]">
         {cartData.map((product, index) => (
           <CartProduct
             key={product.id || index}
