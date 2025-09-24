@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import useAxios from "../hooks/UseAxios";
 import ProductImagesList from "../components/lists/ProductImagesList";
-import ProductsDetailsList from "../components/layout/ProductDetails";
-import AuthorizationNavbar from "../components/layout/AuthorizationNavbar";
+import Navbar from "../components/layout/Navbar";
+import ProductDetails from "../components/layout/ProductDetails";
 
 const ProductInfo = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -64,7 +64,7 @@ const ProductInfo = () => {
 
   return (
     <>
-      <AuthorizationNavbar />
+      <Navbar />
       <div className="flex">
         <div>
           <p className="absolute top-[110px] left-[100px] text-[14px]">
@@ -79,7 +79,7 @@ const ProductInfo = () => {
           src={activeImage}
           className="top-180px absolute left-[245px] max-w-[703px]"
         />
-        <ProductsDetailsList
+        <ProductDetails
           productInfo={productInfo}
           productSettings={productSettings}
           setProductSettings={setProductSettings}

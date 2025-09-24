@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import DefaultAvatarIcon from "../icons/DefaultAvatarIcon";
 import Button from "../uiComponents/Button";
@@ -8,14 +8,17 @@ import { useState } from "react";
 import ShoppingCart from "./ShoppingCart";
 import DownArrowIcon from "../icons/DownArrowIcon";
 
-const AuthorizationNavbar = () => {
+const Navbar = () => {
+  const [searchParams] = useSearchParams();
   const [showShoppingCart, setShowShoppingCart] = useState(false);
 
   const navigate = useNavigate();
   const isLoggedIn = !!Cookies.get("token");
 
   const onLogoClick = () => {
-    navigate("/products");
+    navigate(
+      `/products?sort=${searchParams.get("sort") ?? ""}&page=${searchParams.get("page") ?? ""}`,
+    );
   };
 
   const onLoginClick = () => {
@@ -71,4 +74,4 @@ const AuthorizationNavbar = () => {
   );
 };
 
-export default AuthorizationNavbar;
+export default Navbar;

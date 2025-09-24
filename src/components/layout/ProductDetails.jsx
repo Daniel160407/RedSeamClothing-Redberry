@@ -1,8 +1,9 @@
 import { useCallback, memo } from "react";
 import Button from "../uiComponents/Button";
 import PulsingInfo from "../uiComponents/PulsingInfo";
-import QuantityDropdown from "../uiComponents/QuantityDropdown";
 import CartIcon from "../icons/CartIcon";
+import Dropdown from "../uiComponents/Dropdown";
+import DownArrowIcon from "../icons/DownArrowIcon";
 
 const ProductDetails = ({
   productInfo,
@@ -51,54 +52,62 @@ const ProductDetails = ({
 
       <div className="flex flex-col gap-[48px]">
         <div className="flex flex-col gap-[16px]">
-          <p className="text-[16px]">Color: {available_colors ? productSettings.color : ''}</p>
+          <p className="text-[16px]">
+            Color: {available_colors ? productSettings.color : ""}
+          </p>
           <div className="flex gap-[13px]">
-            {available_colors && available_colors.map((color, index) => (
-              <div
-                key={`${color}-${index}`}
-                className="h-[38px] w-[38px] cursor-pointer rounded-full"
-                style={{ backgroundColor: getDisplayColor(color) }}
-                title={color}
-                onClick={() => {
-                  handleSetting("color", color);
-                  onColorChange?.(index);
-                }}
-                role="button"
-                tabIndex={0}
-                aria-label={`Select color: ${color}`}
-              />
-            ))}
+            {available_colors &&
+              available_colors.map((color, index) => (
+                <div
+                  key={`${color}-${index}`}
+                  className="h-[38px] w-[38px] cursor-pointer rounded-full"
+                  style={{ backgroundColor: getDisplayColor(color) }}
+                  title={color}
+                  onClick={() => {
+                    handleSetting("color", color);
+                    onColorChange?.(index);
+                  }}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`Select color: ${color}`}
+                />
+              ))}
           </div>
         </div>
 
         <div className="flex flex-col gap-[16px]">
-          <p>Size: {available_sizes ? productSettings.size : ''}</p>
+          <p>Size: {available_sizes ? productSettings.size : ""}</p>
           <div className="flex gap-2">
-            {available_sizes && available_sizes.map((size, index) => (
-              <div
-                key={`${size}-${index}`}
-                className={`h-[42px] w-[70px] cursor-pointer rounded-[10px] border pt-[9px] pr-[16px] pb-[9px] pl-[16px] text-center ${
-                  productSettings.size === size
-                    ? "border-2 border-[#10151F]"
-                    : "border border-[#E1DFE1] hover:border-2 hover:border-black"
-                } `}
-                onClick={() => handleSetting("size", size)}
-                role="button"
-                tabIndex={0}
-                aria-label={`Select size: ${size}`}
-              >
-                {size}
-              </div>
-            ))}
+            {available_sizes &&
+              available_sizes.map((size, index) => (
+                <div
+                  key={`${size}-${index}`}
+                  className={`h-[42px] w-[70px] cursor-pointer rounded-[10px] border pt-[9px] pr-[16px] pb-[9px] pl-[16px] text-center ${
+                    productSettings.size === size
+                      ? "border-2 border-[#10151F]"
+                      : "border border-[#E1DFE1] hover:border-2 hover:border-black"
+                  } `}
+                  onClick={() => handleSetting("size", size)}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`Select size: ${size}`}
+                >
+                  {size}
+                </div>
+              ))}
           </div>
         </div>
 
         <div className="flex flex-col gap-[16px]">
           <p>Quantity</p>
-          <QuantityDropdown
-            options={["1", "2", "3", "4", "5", '6', '7', '8', '9', '10']}
-            value={productSettings.quantity}
-            onChange={handleSetting}
+          <Dropdown
+            icon={DownArrowIcon}
+            iconPosition="RIGHT"
+            options={["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]}
+            defaultValue={productSettings.quantity}
+            onChange={(value) => handleSetting('quantity', value)}
+            buttonStyle="flex h-[42px] w-[70px] cursor-pointer items-center rounded-[10px] border border-[#E1DFE1] py-[9px] px-[16px] gap-[10px] text-gray-800 text-center hover:border-2 hover:border-black"
+            contentStyle="absolute z-10 mt-1 w-[70px] rounded-[10px] border border-gray-300 bg-white shadow-lg"
           />
         </div>
 
