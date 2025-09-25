@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useAxios from "../hooks/UseAxios";
 import AuthLayout from "../components/layout/AuthLayout";
 import setCookies from "../utils/SetCookies";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Input from "../components/uiComponents/Input";
 import Button from "../components/uiComponents/Button";
 import CameraIcon from "../components/icons/CameraIcon";
@@ -25,6 +25,7 @@ const Register = () => {
   });
 
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
 
   const onSubmit = async (formData) => {
     try {
@@ -126,23 +127,32 @@ const Register = () => {
     });
   }, [error]);
 
+  const triggerFileInput = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
   return (
     <>
       <AuthLayout title={"Registration"}>
-        <form onSubmit={handleSubmit} className="w-[554px] rounded-md">
+        <form onSubmit={handleSubmit} className="rounded-md">
           <div className="mb-6 flex items-center gap-4">
             {preview ? (
               <>
                 <img
                   src={preview}
                   alt="Avatar"
-                  className="h-16 w-16 rounded-full object-cover"
+                  className="size-[100px] cursor-pointer rounded-full object-cover"
+                  onClick={triggerFileInput}
                 />
                 <div className="flex gap-4 text-[14px] text-gray-600">
                   <Input
-                    type={"file"}
-                    placeholder="Upload new"
+                    type="file"
                     setValue={handleAvatarChange}
+                    placeholder="Upload new"
+                    ref={fileInputRef}
+                    className="hidden"
                   />
                   <Button
                     title={"Remove"}
@@ -155,16 +165,21 @@ const Register = () => {
                 </div>
               </>
             ) : (
-              <div className="flex items-center justify-center gap-[15px]">
-                <div className="flex h-[100px] w-[100px] cursor-pointer items-center justify-center rounded-[110px] border border-[#E1DFE1]">
+              <label
+                onClick={triggerFileInput}
+                className="flex cursor-pointer items-center justify-center gap-[15px]"
+              >
+                <div className="flex size-[100px] items-center justify-center rounded-[110px] border border-[#E1DFE1]">
                   <CameraIcon />
                 </div>
                 <Input
-                  type={"file"}
+                  type="file"
                   setValue={handleAvatarChange}
-                  placeholder="Upload image"
+                  ref={fileInputRef}
+                  className="hidden"
                 />
-              </div>
+                <span className="text-[14px] text-gray-600">Upload image</span>
+              </label>
             )}
           </div>
 
@@ -175,61 +190,49 @@ const Register = () => {
               type="text"
               name="username"
               placeholder="Username *"
-              style={
-                error.username !== "" ? "border-[#FF4000]" : "border-[#E1DFE1]"
-              }
-              errorMessage={error.username ?? null}
+              errorMessage={error.username ?? ""}
             />
+
             <Input
               value={formData.email}
               setValue={handleChange}
               type="email"
               name="email"
               placeholder="Email *"
-              style={error.email ? "border border-[#FF4000]" : ""}
-              errorMessage={error.email ?? null}
+              errorMessage={error.email ?? ""}
             />
 
-            <div className="relative">
-              <Input
-                name="password"
-                placeholder="Password *"
-                value={formData.password}
-                setValue={handleChange}
-                style={
-                  normalizedPasswordError.password
-                    ? "border border-[#FF4000]"
-                    : ""
-                }
-                errorMessage={normalizedPasswordError.password ?? null}
-              />
-            </div>
+            <Input
+              name="password"
+              placeholder="Password *"
+              type="password"
+              value={formData.password}
+              setValue={handleChange}
+              errorMessage={normalizedPasswordError.password ?? ""}
+            />
 
-            <div className="relative">
-              <Input
-                name="confirmPassword"
-                placeholder="Confirm password *"
-                value={formData.confirmPassword}
-                setValue={handleChange}
-                style={
-                  normalizedPasswordError.confirmPassword
-                    ? "border border-[#FF4000]"
-                    : ""
-                }
-                errorMessage={normalizedPasswordError.confirmPassword ?? null}
-              />
-            </div>
+            <Input
+              name="confirmPassword"
+              placeholder="Confirm password *"
+              type="password"
+              value={formData.confirmPassword}
+              setValue={handleChange}
+              errorMessage={normalizedPasswordError.confirmPassword ?? ""}
+            />
           </div>
 
           <button
             type="submit"
-            className="mt-6 h-[41px] w-[554px] cursor-pointer rounded-[10px] bg-orange-600 px-5 py-2.5 text-white hover:bg-orange-700"
+            className="mt-[46px] h-[41px] w-full cursor-pointer rounded-[10px] bg-orange-600 px-5 py-2.5 text-white transition-all hover:bg-orange-700"
           >
             Register
           </button>
           <p className="mt-4 w-full text-center text-[14px] text-gray-600">
             Already member?{" "}
-            <Link to={{ pathname: "/login" }} className="text-[#FF4000]">
+            <Link
+              to={{ pathname: "/login" }}
+              className="text-[#FF4000] hover:underline"
+            >
               Log in
             </Link>
           </p>

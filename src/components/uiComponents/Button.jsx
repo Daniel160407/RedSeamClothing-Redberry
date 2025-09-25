@@ -4,6 +4,7 @@ const Button = ({
   style = "",
   iconPosition = "LEFT",
   onClick,
+  type = "submit",
 }) => {
   const flexDirection = {
     TOP: "flex-col",
@@ -16,6 +17,7 @@ const Button = ({
     <button
       className={`flex items-center justify-center gap-2 ${flexDirection[iconPosition]} ${style}`}
       onClick={onClick}
+      type={type}
     >
       {Icon && <Icon />}
       {title && <p>{title}</p>}
