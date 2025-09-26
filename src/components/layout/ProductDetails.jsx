@@ -1,4 +1,4 @@
-import { useCallback, memo } from "react";
+import { useCallback, useMemo } from "react";
 import Button from "../uiComponents/Button";
 import PulsingInfo from "../uiComponents/PulsingInfo";
 import CartIcon from "../icons/CartIcon";
@@ -12,6 +12,34 @@ const ProductDetails = ({
   onColorChange,
   onAddToCart,
 }) => {
+  const colorAlternatives = useMemo(
+    () => ({
+      Yellow: "#FFE066",
+      Green: "#4CAF50",
+      White: "#F8F8F8",
+      Red: "#F44336",
+      Multi: "#9C27B0",
+      Blue: "#2196F3",
+      Grey: "#9E9E9E",
+      Black: "#424242",
+      "Navy Blue": "#1976D2",
+      Orange: "#FF9800",
+      Beige: "#E6D7B8",
+      Purple: "#7B1FA2",
+      Pink: "#E91E63",
+      Maroon: "#C2185B",
+      Brown: "#795548",
+      Peach: "#FFCCBC",
+      "Off White": "#F5F5F5",
+      Mauve: "#BA68C8",
+      Magenta: "#D81B60",
+      Cream: "#FFFDE7",
+      Khaki: "#C3B091",
+      Olive: "#827717",
+    }),
+    [],
+  );
+
   const handleSetting = useCallback(
     (setting, value) => {
       setProductSettings((prevSettings) => ({
@@ -22,11 +50,28 @@ const ProductDetails = ({
     [setProductSettings],
   );
 
-  const getDisplayColor = useCallback((color) => {
-    return color.includes(" ")
-      ? color.split(" ")[color.split(" ").length - 1]
-      : color;
-  }, []);
+  const getDisplayStyle = useCallback(
+    (color) => {
+      if (color === "Multi") {
+        return {
+          background:
+            "linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet)",
+        };
+      }
+
+      const alternativeColor = colorAlternatives[color];
+      if (alternativeColor) {
+        return { backgroundColor: alternativeColor };
+      }
+
+      const safeColor = color.includes(" ")
+        ? color.split(" ")[color.split(" ").length - 1]
+        : color;
+
+      return { backgroundColor: safeColor };
+    },
+    [colorAlternatives],
+  );
 
   if (!productInfo || !productInfo.available_colors) {
     return <PulsingInfo />;
@@ -44,7 +89,7 @@ const ProductDetails = ({
   const { image: brandImage, name: brandName } = brand;
 
   return (
-    <div className="relative top-[180px] left-[1116px] flex w-[704px] flex-col gap-[56px]">
+    <div className="relative top-[180px] left-[60%] flex w-[704px] flex-col gap-[56px]">
       <div className="flex flex-col gap-[21px]">
         <h1 className="text-[32px]">{name}</h1>
         <p className="text-[32px]">$ {price}</p>
@@ -61,17 +106,31 @@ const ProductDetails = ({
               available_colors.map((color, index) => (
                 <div
                   key={`${color}-${index}`}
-                  className="h-[38px] w-[38px] cursor-pointer rounded-full"
-                  style={{ backgroundColor: getDisplayColor(color) }}
+                  role="button"
+                  tabIndex={0}
                   title={color}
                   onClick={() => {
                     handleSetting("color", color);
                     onColorChange?.(index);
                   }}
-                  role="button"
-                  tabIndex={0}
-                  aria-label={`Select color: ${color}`}
-                />
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      handleSetting("color", color);
+                      onColorChange?.(index);
+                    }
+                  }}
+                  className={`inline-flex cursor-pointer items-center justify-center rounded-full p-[6px] ${
+                    productSettings.color === color
+                      ? "border border-[#E1DFE1] bg-white"
+                      : "bg-white"
+                  } `}
+                >
+                  <div
+                    className="h-[38px] w-[38px] rounded-full"
+                    style={getDisplayStyle(color)}
+                    aria-hidden="true"
+                  />
+                </div>
               ))}
           </div>
         </div>
@@ -119,8 +178,10 @@ const ProductDetails = ({
           <Button
             icon={CartIcon}
             title={"Add to cart"}
-            style="text-[#FFFFFF] flex h-[50px] w-[704px] cursor-pointer items-center justify-center gap-[10px] rounded-[10px] bg-[#FF4000] text-center"
-            onClick={onAddToCart}
+            style={`${available_colors && available_sizes ? "cursor-pointer" : "cursor-not-allowed opacity-50"} py-[16px] px-[60px] text-[#FFFFFF] flex h-[50px] w-[704px] items-center justify-center gap-[10px] rounded-[10px] bg-[#FF4000] text-center`}
+            onClick={
+              available_colors && available_sizes ? onAddToCart : undefined
+            }
           />
         </div>
 
@@ -147,4 +208,4 @@ const ProductDetails = ({
   );
 };
 
-export default memo(ProductDetails);
+export default ProductDetails;

@@ -4,11 +4,11 @@ import DefaultAvatarIcon from "../icons/DefaultAvatarIcon";
 import Button from "../uiComponents/Button";
 import LogoIcon from "../icons/LogoIcon";
 import DarkCartIcon from "../icons/DarkCartIcon";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ShoppingCart from "./ShoppingCart";
 import DownArrowIcon from "../icons/DownArrowIcon";
 
-const Navbar = () => {
+const Navbar = ({ openCart }) => {
   const [searchParams] = useSearchParams();
   const [showShoppingCart, setShowShoppingCart] = useState(false);
 
@@ -24,6 +24,10 @@ const Navbar = () => {
   const onLoginClick = () => {
     navigate("/login");
   };
+
+  useEffect(() => {
+    setShowShoppingCart(openCart);
+  }, [openCart]);
 
   return (
     <>
@@ -60,10 +64,7 @@ const Navbar = () => {
                 src={Cookies.get("profile_photo") ?? "/images/Avatar.jpg"}
                 className="h-10 w-10 rounded-full object-cover"
               />
-              <Button
-                icon={DownArrowIcon}
-                style="h-5 w-5 cursor-pointer"
-              />
+              <Button icon={DownArrowIcon} style="h-5 w-5 cursor-pointer" />
             </div>
           </div>
         )}

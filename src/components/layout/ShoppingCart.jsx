@@ -59,7 +59,6 @@ const ShoppingCart = ({ setShowCart }) => {
         setCartData((prevCartData) => {
           const updatedCart = prevCartData.filter((product) => product.id !== productId);
           
-          // Calculate new total price and products amount
           const newTotal = updatedCart.reduce(
             (sum, product) => sum + product.total_price,
             0,
@@ -105,7 +104,7 @@ const ShoppingCart = ({ setShowCart }) => {
   }, []);
 
   return (
-    <div className="fixed top-0 right-0 z-1000 h-[1080px] w-[540px] border-l border-[#E1DFE1] bg-[#f8f6f7]">
+    <div className="fixed top-0 right-0 z-1000 h-full w-[540px] border-l border-[#E1DFE1] bg-[#f8f6f7]">
       <div className="flex items-center justify-between px-[40px] pt-[41px]">
         <p className="h-[30px] w-[180px] text-[20px]">
           Shopping cart ({productsAmount})
@@ -118,7 +117,7 @@ const ShoppingCart = ({ setShowCart }) => {
         </div>
       </div>
 
-      <div className="flex max-h-[660px] flex-col gap-[36px] overflow-y-auto pt-[93px] pl-[40px]">
+      <div className="flex max-h-[760px] mt-10 flex-col gap-[36px] overflow-y-auto pt-[93px] pl-[40px]">
         {cartData.map((product, index) => (
           <CartProduct
             key={product.id || index}

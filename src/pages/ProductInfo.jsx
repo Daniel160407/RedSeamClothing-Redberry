@@ -9,6 +9,7 @@ const ProductInfo = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [productInfo, setProductInfo] = useState({});
   const [activeImage, setActiveImage] = useState("/");
+  const [openShoppingCart, setOpenShoppingCart] = useState(false);
 
   const [productSettings, setProductSettings] = useState({
     color: searchParams.get("color") ?? "",
@@ -28,7 +29,13 @@ const ProductInfo = () => {
 
   const handleAddToCart = async () => {
     try {
-      await useAxios.post(`/cart/products/${productInfo.id}`, productSettings);
+      const response = await useAxios.post(
+        `/cart/products/${productInfo.id}`,
+        productSettings,
+      );
+      if (response?.status === 201) {
+        setOpenShoppingCart(true);
+      }
     } catch (err) {
       console.log("Request failed with error: " + err);
     }
@@ -64,21 +71,23 @@ const ProductInfo = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar openCart={openShoppingCart} />
       <div className="flex">
         <div>
-          <p className="absolute top-[110px] left-[100px] text-[14px]">
-            Listing / Product
-          </p>
-          <ProductImagesList
-            images={productInfo.images}
-            onImageClick={setActiveImage}
+          <div>
+            <p className="absolute top-[110px] left-[100px] text-[14px]">
+              Listing / Product
+            </p>
+            <ProductImagesList
+              images={productInfo.images}
+              onImageClick={setActiveImage}
+            />
+          </div>
+          <img
+            src={activeImage}
+            className="top-180px absolute left-[245px] max-w-[703px]"
           />
         </div>
-        <img
-          src={activeImage}
-          className="top-180px absolute left-[245px] max-w-[703px]"
-        />
         <ProductDetails
           productInfo={productInfo}
           productSettings={productSettings}

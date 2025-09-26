@@ -1,4 +1,7 @@
 import React from "react";
+import Button from "./Button";
+import LeftArrowIcon from "../icons/LeftArrowIcon";
+import RightArrowIcon from "../icons/RightArrowIcon";
 
 const PageSelector = ({
   currentPage,
@@ -62,14 +65,13 @@ const PageSelector = ({
   return (
     <div className={`flex items-center justify-center gap-2`}>
       {showPrevNext && (
-        <button
-          onClick={() => onPageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className="flex h-8 w-8 items-center justify-center text-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
-          aria-label="Previous page"
-        >
-          ‹
-        </button>
+        <Button
+          onClick={() =>
+            onPageChange(0 < currentPage - 1 ? currentPage - 1 : currentPage)
+          }
+          icon={LeftArrowIcon}
+          style={`flex h-8 w-8 items-center justify-center text-gray-800 disabled:cursor-not-allowed cursor-pointer disabled:opacity-50 disabled-${currentPage === 1}`}
+        />
       )}
 
       {visiblePages.map((page, index) => (
@@ -94,14 +96,15 @@ const PageSelector = ({
       ))}
 
       {showPrevNext && (
-        <button
-          onClick={() => onPageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className="flex h-8 w-8 items-center justify-center text-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
-          aria-label="Next page"
-        >
-          ›
-        </button>
+        <Button
+          onClick={() =>
+            onPageChange(
+              totalPages > currentPage + 1 ? currentPage + 1 : currentPage,
+            )
+          }
+          icon={RightArrowIcon}
+          style={`flex h-8 w-8 items-center justify-center text-gray-800 disabled:cursor-not-allowed cursor-pointer disabled:opacity-50 disabled-${currentPage === 1}`}
+        />
       )}
     </div>
   );

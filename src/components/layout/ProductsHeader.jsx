@@ -37,13 +37,15 @@ const ProductsHeader = ({
   };
 
   const handleFilterApply = () => {
-    setShowFilterOptions(false);
-    onFilterApply();
+    if (filterFrom && filterTo) {
+      setShowFilterOptions(false);
+      onFilterApply();
+    }
   };
 
   return (
     <div className="flex w-full items-center justify-between px-8 py-4">
-      <h1 className="text-2xl text-gray-900">Products</h1>
+      <h1 className="text-[42px] text-gray-900">Products</h1>
 
       <div className="flex items-center space-x-6 text-sm text-gray-600">
         <p>
@@ -52,55 +54,58 @@ const ProductsHeader = ({
 
         <div className="h-5 w-px bg-gray-300" />
 
-        <Button
-          icon={FilterIcon}
-          title={"Filter"}
-          onClick={() => setShowFilterOptions(!showFilterOptions)}
-          style="flex gap-[8px] cursor-pointer"
-        />
-        {showFilterOptions && (
-          <div className="top-[205px] left-[1332px] flex max-w-[392px] flex-col gap-[20px] rounded-[8px] border border-[#E1DFE1] bg-[#FFFFFF] p-[16px]">
-            <p className="text-semibold font-poppins text-[16px]">
-              Select price
-            </p>
-            <div className="flex gap-[10px]">
-              <div className="max-w-[175px]">
-                <Input
-                  value={filterFrom}
-                  setValue={(e) => setFilterFrom(e.target.value)}
-                  placeholder="From *"
-                  type={"text"}
-                  style="max-w-[175px]"
-                />
+        <div className="relative">
+          <Button
+            icon={FilterIcon}
+            title={"Filter"}
+            onClick={() => setShowFilterOptions(!showFilterOptions)}
+            style="flex gap-[8px] cursor-pointer"
+          />
+          {showFilterOptions && (
+            <div className="absolute top-full right-0 z-50 mt-2 flex w-[392px] max-w-[392px] flex-col gap-[20px] rounded-[8px] border border-[#E1DFE1] bg-[#FFFFFF] p-[16px]">
+              <p className="text-semibold font-poppins text-[16px]">
+                Select price
+              </p>
+              <div className="flex gap-[10px]">
+                <div className="max-w-[175px]">
+                  <Input
+                    value={filterFrom}
+                    setValue={(e) => setFilterFrom(e.target.value)}
+                    placeholder="From *"
+                    type={"text"}
+                    style="max-w-[175px]"
+                  />
+                </div>
+                <div>
+                  <Input
+                    value={filterTo}
+                    setValue={(e) => setFilterTo(e.target.value)}
+                    placeholder="To *"
+                    type={"text"}
+                    style="max-w-[175px]"
+                  />
+                </div>
               </div>
-              <div>
-                <Input
-                  value={filterTo}
-                  setValue={(e) => setFilterTo(e.target.value)}
-                  placeholder="To *"
-                  type={"text"}
-                  style="max-w-[175px]"
-                />
-              </div>
+              <Button
+                title={"Apply"}
+                style="w-[124px] h-[41px] rounded-[10px] py-[10px] px-[20px] flex gap-[10px] bg-[#FF4000] text-[14px] text-[#FFFFFF] font-poppins self-end cursor-pointer"
+                onClick={handleFilterApply}
+              />
             </div>
-            <Button
-              title={"Apply"}
-              style="w-[124px] h-[41px] rounded-[10px] py-[10px] px-[20px] flex gap-[10px] bg-[#FF4000] text-[14px] text-[#FFFFFF] font-poppins self-end cursor-pointer"
-              onClick={handleFilterApply}
-            />
-          </div>
-        )}
-
-        <Dropdown
-          title={"Sort by"}
-          options={sortByOptions}
-          onChange={handleSortByChange}
-          icon={DownArrowIcon}
-          iconPosition="RIGHT"
-          buttonStyle="cursor-pointer"
-          contentStyle="fixed top-[205px] left-[1597px] bg-[#FFFFFF] border border-[#E1DFE1] rounded-[8px] flex flex-col gap-[8px] py-[16px]"
-          defaultValue={sortObject[sortBy] ?? "Sort by"}
-        />
+          )}
+        </div>
+        <div className="relative">
+          <Dropdown
+            title={"Sort by"}
+            options={sortByOptions}
+            onChange={handleSortByChange}
+            icon={DownArrowIcon}
+            iconPosition="RIGHT"
+            buttonStyle="cursor-pointer"
+            contentStyle="absolute top-full right-0 mt-2 z-50 bg-[#FFFFFF] border border-[#E1DFE1] rounded-[8px] flex flex-col gap-[8px] py-[16px] min-w-[200px]"
+            defaultValue={sortObject[sortBy] ?? "Sort by"}
+          />
+        </div>
         <div></div>
       </div>
     </div>

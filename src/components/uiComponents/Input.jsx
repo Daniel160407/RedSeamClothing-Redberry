@@ -8,7 +8,7 @@ const Input = ({
   placeholder = "",
   type,
   name,
-  errorMessage,
+  errorMessage = "",
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
