@@ -30,7 +30,7 @@ const ProductInfo = () => {
     try {
       await useAxios.post(`/cart/products/${productInfo.id}`, productSettings);
     } catch (err) {
-      console.log("Request failed with error: " + err);
+      console.error("Request failed with error: " + err);
     }
   };
 

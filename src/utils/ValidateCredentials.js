@@ -55,14 +55,18 @@ const validateCredentials = (fields) => {
     errors.password = "The password field must be at least 3 characters.";
   }
 
-  if (confirmPassword && password !== confirmPassword) {
-    errors.confirmPassword = "The password confirmation does not match.";
+  if (confirmPassword) {
+    if (password !== confirmPassword) {
+      errors.confirmPassword = "The password confirmation does not match.";
+    }
   } else {
     errors.confirmPassword = "The password confirmation field is required.";
   }
 
   if (!address) {
     errors.address = "The address field is required.";
+  } else if (address.length < 3) {
+    errors.address = "The address field must be at least 3 characters.";
   }
 
   if (zip_code) {
@@ -85,8 +89,15 @@ const validateCredentials = (fields) => {
   return finalErrors;
 };
 
-export const isValid = (errors) => {
-  return Object.keys(errors).length === 0;
+export const isValid = (errors, mode) => {
+  switch (mode) {
+    case "LOGIN":
+      return Object.keys(errors).length === 6;
+    case "REGISTRATION":
+      return Object.keys(errors).length === 4;
+    case "CHECKOUT":
+      return Object.keys(errors).length === 3;
+  }
 };
 
 export default validateCredentials;

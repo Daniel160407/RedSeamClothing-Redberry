@@ -24,7 +24,7 @@ const Checkout = () => {
   const [userData, setUserData] = useState({
     name: "",
     surname: "",
-    email: "",
+    email: Cookies.get("email") ?? "",
     address: "",
     zip_code: "",
   });
@@ -98,7 +98,7 @@ const Checkout = () => {
     try {
       const validationResults = validateCredentials(userData);
 
-      if (!isValid(validationResults)) {
+      if (!isValid(validationResults, "CHECKOUT")) {
         setErrors(validationResults);
         return;
       }

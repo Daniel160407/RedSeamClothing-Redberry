@@ -4,7 +4,7 @@ import Button from "../uiComponents/Button";
 
 const SuccessLayout = ({ handleClose }) => {
   return (
-    <div className="absolute top-[50%] left-[50%] h-[590px] w-[876px] -translate-x-1/2 -translate-y-1/2 transform bg-white p-10">
+    <div className="absolute top-[50%] left-[50%] h-[590px] w-[876px] z-1000 rounded-[10px] -translate-x-1/2 -translate-y-1/2 transform bg-white p-10">
       <div className="flex justify-end">
         <Button
           icon={CloseIcon}
