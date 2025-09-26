@@ -57,8 +57,10 @@ const ShoppingCart = ({ setShowCart }) => {
 
       if (response?.status === 204) {
         setCartData((prevCartData) => {
-          const updatedCart = prevCartData.filter((product) => product.id !== productId);
-          
+          const updatedCart = prevCartData.filter(
+            (product) => product.id !== productId,
+          );
+
           const newTotal = updatedCart.reduce(
             (sum, product) => sum + product.total_price,
             0,
@@ -67,10 +69,10 @@ const ShoppingCart = ({ setShowCart }) => {
             (total, product) => total + product.quantity,
             0,
           );
-          
+
           setTotalPrice(newTotal);
           setProductsAmount(newProductsAmount);
-          
+
           return updatedCart;
         });
       }

@@ -37,7 +37,7 @@ const ProductInfo = () => {
         setOpenShoppingCart(true);
       }
     } catch (err) {
-      console.log("Request failed with error: " + err);
+      console.error("Request failed with error: " + err);
     }
   };
 

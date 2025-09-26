@@ -6,12 +6,15 @@ import { useEffect, useRef, useState } from "react";
 import Input from "../components/uiComponents/Input";
 import Button from "../components/uiComponents/Button";
 import CameraIcon from "../components/icons/CameraIcon";
-import validateCredentials from "../utils/ValidateCredentials";
+import validateCredentials, { isValid } from "../utils/ValidateCredentials";
 
 const Register = () => {
   const [avatar, setAvatar] = useState(null);
   const [preview, setPreview] = useState("");
-  const [normalizedPasswordError, setNormalizedPasswordError] = useState({});
+  const [normalizedPasswordError, setNormalizedPasswordError] = useState({
+    password: "",
+    confirmPassword: "",
+  });
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -85,15 +88,11 @@ const Register = () => {
     data.append("password", formData.password);
     data.append("password_confirmation", formData.confirmPassword);
 
-    const errors = validateCredentials(formData);
-    if (
-      errors.email === "" &&
-      errors.username === "" &&
-      errors.password === ""
-    ) {
+    const validationResults = validateCredentials(formData);
+    if (isValid(validationResults, "REGISTRATION")) {
       onSubmit(data);
     } else {
-      setError(errors);
+      setError(validationResults);
     }
   };
 
@@ -202,23 +201,25 @@ const Register = () => {
               errorMessage={error.email ?? ""}
             />
 
-            <Input
-              name="password"
-              placeholder="Password *"
-              type="password"
-              value={formData.password}
-              setValue={handleChange}
-              errorMessage={normalizedPasswordError.password ?? ""}
-            />
+            <div className="relative">
+              <Input
+                name="password"
+                placeholder="Password *"
+                value={formData.password}
+                setValue={handleChange}
+                errorMessage={normalizedPasswordError.password ?? ""}
+              />
+            </div>
 
-            <Input
-              name="confirmPassword"
-              placeholder="Confirm password *"
-              type="password"
-              value={formData.confirmPassword}
-              setValue={handleChange}
-              errorMessage={normalizedPasswordError.confirmPassword ?? ""}
-            />
+            <div className="relative">
+              <Input
+                name="confirmPassword"
+                placeholder="Confirm password *"
+                value={formData.confirmPassword}
+                setValue={handleChange}
+                errorMessage={normalizedPasswordError.confirmPassword ?? ""}
+              />
+            </div>
           </div>
 
           <button
