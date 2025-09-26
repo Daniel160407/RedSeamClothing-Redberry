@@ -222,12 +222,12 @@ const Register = () => {
             </div>
           </div>
 
-          <button
+          <Button
             type="submit"
-            className="mt-[46px] h-[41px] w-full cursor-pointer rounded-[10px] bg-orange-600 px-5 py-2.5 text-white transition-all hover:bg-orange-700"
-          >
-            Register
-          </button>
+            title={"Register"}
+            style="mt-[46px] h-[41px] w-full cursor-pointer rounded-[10px] bg-orange-600 px-5 py-2.5 text-white transition-all hover:bg-orange-700"
+          />
+
           <p className="mt-4 w-full text-center text-[14px] text-gray-600">
             Already member?{" "}
             <Link

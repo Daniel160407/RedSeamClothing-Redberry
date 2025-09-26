@@ -14,10 +14,9 @@ const apiClient = axios.create({
 const useAxios = async (url, method, data = null, config = {}) => {
   try {
     if (Cookies.get("token")) {
-      config = {
-        headers: {
-          Authorization: `Bearer ${Cookies.get("token") || ""}`,
-        },
+      config.headers = {
+        ...config.headers,
+        Authorization: `Bearer ${Cookies.get("token") || ""}`,
       };
     }
     const response = await apiClient.request({
