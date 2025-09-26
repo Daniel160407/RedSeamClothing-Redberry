@@ -4,7 +4,8 @@ import AuthLayout from "../components/layout/AuthLayout";
 import setCookies from "../utils/SetCookies";
 import { useState } from "react";
 import Input from "../components/uiComponents/Input";
-import validateCredentials from "../utils/ValidateCredentials";
+import validateCredentials, { isValid } from "../utils/ValidateCredentials";
+import Button from "../components/uiComponents/Button";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -44,16 +45,12 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const errors = validateCredentials(formData);
+    const validationResults = validateCredentials(formData);
 
-    if (
-      errors.email === "" &&
-      errors.username === "" &&
-      errors.password === ""
-    ) {
+    if (isValid(validationResults, "LOGIN")) {
       onSubmit(formData);
     } else {
-      setError(errors);
+      setError(validationResults);
     }
   };
 
@@ -66,28 +63,22 @@ const Login = () => {
       <AuthLayout title={"Log in"}>
         <>
           <form onSubmit={handleSubmit} className="flex flex-col gap-[24px]">
-            <Input
-              value={formData.email}
-              setValue={handleChange}
-              name="email"
-              placeholder={"Email *"}
-              type={"email"}
-              style={
-                error.email !== "" ? "border-[#FF4000]" : "border-[#E1DFE1]"
-              }
-              errorMessage={error.email ?? null}
-            />
+            <div className="relative w-[554px]">
+              <Input
+                value={formData.email}
+                setValue={handleChange}
+                name="email"
+                placeholder={"Email *"}
+                type={"email"}
+                errorMessage={error.email ?? null}
+              />
+            </div>
             <div className="relative w-[554px]">
               <Input
                 value={formData.password}
                 setValue={handleChange}
                 name="password"
                 placeholder="Password *"
-                style={
-                  error.password !== ""
-                    ? "border-[#FF4000]"
-                    : "border-[#E1DFE1]"
-                }
                 errorMessage={error.password ?? null}
               />
             </div>
