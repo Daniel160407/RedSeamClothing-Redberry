@@ -8,11 +8,19 @@ import Button from "../components/uiComponents/Button";
 import SuccessLayout from "../components/layout/SuccessLayout";
 import { useNavigate } from "react-router-dom";
 import MailIcon from "../components/icons/MailIcon";
+import validateCredentials, { isValid } from "../utils/ValidateCredentials";
 
 const Checkout = () => {
   const [cartData, setCartData] = useState([]);
   const [totalPrice, setTotalPrice] = useState("");
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [errors, setErrors] = useState({
+    name: null,
+    surname: null,
+    email: null,
+    address: null,
+    zip_code: null,
+  });
   const [userData, setUserData] = useState({
     name: "",
     surname: "",
@@ -24,6 +32,9 @@ const Checkout = () => {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
+    if (errors[e.target.name]) {
+      setErrors({ ...errors, [e.target.name]: null });
+    }
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
@@ -85,6 +96,13 @@ const Checkout = () => {
 
   const handlePayment = async () => {
     try {
+      const validationResults = validateCredentials(userData);
+
+      if (!isValid(validationResults)) {
+        setErrors(validationResults);
+        return;
+      }
+
       const response = await useAxios.post(
         `/cart/checkout?name=${userData.name}&surname=${userData.surname}&email=${userData.email}&address=${userData.address}&zip_code=${userData.zip_code}`,
       );
@@ -92,7 +110,16 @@ const Checkout = () => {
         setShowSuccessMessage(true);
       }
     } catch (error) {
-      console.log(error);
+      if (error.response?.status === 422) {
+        const serverErrors = error.response.data.errors;
+        const simplifiedErrors = Object.fromEntries(
+          Object.entries(serverErrors).map(([key, value]) => [
+            key,
+            value?.[0] || value,
+          ]),
+        );
+        setErrors(simplifiedErrors);
+      }
     }
   };
 
@@ -147,6 +174,7 @@ const Checkout = () => {
                 style="bg-white"
                 value={userData.name}
                 setValue={handleChange}
+                errorMessage={errors.name ?? ""}
               />
               <Input
                 type="text"
@@ -155,21 +183,29 @@ const Checkout = () => {
                 style="bg-white"
                 value={userData.surname}
                 setValue={handleChange}
+                errorMessage={errors.surname ?? ""}
               />
             </div>
 
-            <div className="flex w-[578px] items-center gap-4">
-              <div className="flex h-[42px] w-full items-center gap-[4px] rounded-[8px] bg-white px-3 pr-10 ring-1 transition-all focus:outline-0 ring-[#E1DFE1] focus:ring-black">
+            <div className="w-[578px] items-center gap-4">
+              <div
+                className={`flex h-[42px] w-full items-center gap-[4px] rounded-[8px] bg-white px-3 pr-10 ring-1 transition-all focus:ring-black focus:outline-0 ${errors.email ? "ring-[#FF4000]" : "ring-[#E1DFE1]"}`}
+              >
                 <MailIcon />
                 <input
                   type="text"
                   placeholder="Email"
                   name="email"
-                  className="w-full h-full outline-none"
+                  className={`h-full w-full outline-none`}
                   value={userData.email}
                   onChange={handleChange}
                 />
               </div>
+              {errors.email && (
+                <p className="mt-1 ml-1 text-sm text-[#FF4000]">
+                  {errors.email}
+                </p>
+              )}
             </div>
 
             <div className="grid grid-cols-2 gap-6">
@@ -180,6 +216,7 @@ const Checkout = () => {
                 style="bg-white"
                 value={userData.address}
                 setValue={handleChange}
+                errorMessage={errors.address ?? ""}
               />
               <Input
                 type="text"
@@ -188,6 +225,7 @@ const Checkout = () => {
                 style="bg-white"
                 value={userData.zip_code}
                 setValue={handleChange}
+                errorMessage={errors.zip_code ?? ""}
               />
             </div>
           </div>
