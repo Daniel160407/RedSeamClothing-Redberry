@@ -16,9 +16,19 @@ const Navbar = ({ openCart }) => {
   const isLoggedIn = !!Cookies.get("token");
 
   const onLogoClick = () => {
-    navigate(
-      `/products?sort=${searchParams.get("sort") ?? ""}&page=${searchParams.get("page") ?? ""}`,
-    );
+    const sort = searchParams.get("sort")
+      ? `sort=${searchParams.get("sort")}`
+      : "";
+
+    const filterFrom = searchParams.get("filterfrom")
+      ? `&filterfrom=${searchParams.get("filterfrom")}`
+      : "";
+
+    const filterTo = searchParams.get("filterto")
+      ? `&filterto=${searchParams.get("filterto")}`
+      : "";
+
+    navigate(`/products?${sort}${filterFrom}${filterTo}`);
   };
 
   const onLoginClick = () => {

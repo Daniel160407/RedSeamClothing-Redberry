@@ -28,7 +28,15 @@ const Products = () => {
   const navigate = useNavigate();
 
   const handleProductClick = (productId) => {
-    navigate(`/info?sort=${sortBy}&page=${page}&id=${productId}`);
+    const params = new URLSearchParams();
+
+    if (sortBy) params.append("sort", sortBy);
+    if (filterFrom) params.append("filterfrom", filterFrom);
+    if (filterTo) params.append("filterto", filterTo);
+    if (page) params.append("page", page);
+    if (productId) params.append("id", productId);
+
+    navigate(`/info?${params.toString()}`);
   };
 
   const handleSortByChange = (sortOption) => {
@@ -80,9 +88,12 @@ const Products = () => {
 
   useEffect(() => {
     if (showFilters) return;
-
     fetchProducts();
-  }, [sortBy, page, showFilters]);
+  }, [showFilters]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [page, sortBy]);
 
   return (
     <>
