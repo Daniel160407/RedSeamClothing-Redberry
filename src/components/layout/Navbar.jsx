@@ -16,8 +16,12 @@ const Navbar = ({ openCart }) => {
   const isLoggedIn = !!Cookies.get("token");
 
   const onLogoClick = () => {
+    const page = searchParams.get("page")
+      ? `page=${searchParams.get("page")}`
+      : "";
+
     const sort = searchParams.get("sort")
-      ? `sort=${searchParams.get("sort")}`
+      ? `&sort=${searchParams.get("sort")}`
       : "";
 
     const filterFrom = searchParams.get("filterfrom")
@@ -28,7 +32,7 @@ const Navbar = ({ openCart }) => {
       ? `&filterto=${searchParams.get("filterto")}`
       : "";
 
-    navigate(`/products?${sort}${filterFrom}${filterTo}`);
+    navigate(`/products?${page}${sort}${filterFrom}${filterTo}`);
   };
 
   const onLoginClick = () => {

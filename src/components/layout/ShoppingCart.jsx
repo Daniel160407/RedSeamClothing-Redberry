@@ -5,11 +5,13 @@ import CloseIcon from "../icons/CloseIcon";
 import CartProduct from "../model/CartProduct";
 import Button from "../uiComponents/Button";
 import { useNavigate } from "react-router-dom";
+import EmptyCartModal from "./EmptyCartModal";
 
 const ShoppingCart = ({ setShowCart }) => {
   const [cartData, setCartData] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [productsAmount, setProductsAmount] = useState(0);
+  const [showEmptyModal, setShowEmptyModal] = useState(false);
 
   const navigate = useNavigate();
 
@@ -21,27 +23,25 @@ const ShoppingCart = ({ setShowCart }) => {
 
       if (response?.status === 200) {
         setCartData((prevCartData) => {
-          const updatedCart = prevCartData.map((product) => {
-            return product.id === productId
+          const updatedCart = prevCartData.map((product) =>
+            product.id === productId
               ? {
                   ...product,
                   quantity: response.data[0].quantity,
                   total_price: response.data[0].total_price,
                 }
-              : product;
-          });
+              : product,
+          );
 
           const newTotal = updatedCart.reduce(
             (sum, product) => sum + product.total_price,
             0,
           );
           setTotalPrice(newTotal);
-          setProductsAmount(() => {
-            return updatedCart.reduce(
-              (total, product) => total + product.quantity,
-              0,
-            );
-          });
+
+          setProductsAmount(
+            updatedCart.reduce((total, product) => total + product.quantity, 0),
+          );
 
           return updatedCart;
         });
@@ -94,9 +94,13 @@ const ShoppingCart = ({ setShowCart }) => {
         setTotalPrice(
           data.reduce((sum, product) => sum + product.total_price, 0),
         );
-        setProductsAmount(() => {
-          return data.reduce((total, product) => total + product.quantity, 0);
-        });
+        setProductsAmount(
+          data.reduce((total, product) => total + product.quantity, 0),
+        );
+
+        if (data.length === 0) {
+          setShowEmptyModal(true);
+        }
       } catch (error) {
         console.error("Failed to fetch cart data:", error);
       }
@@ -119,39 +123,47 @@ const ShoppingCart = ({ setShowCart }) => {
         </div>
       </div>
 
-      <div className="flex max-h-[760px] mt-10 flex-col gap-[36px] overflow-y-auto pt-[93px] pl-[40px]">
-        {cartData.map((product, index) => (
-          <CartProduct
-            key={product.id || index}
-            product={product}
-            onQuantityChange={handleQuantityChange}
-            onDelete={handleDelete}
-          />
-        ))}
-      </div>
+      {productsAmount > 0 ? (
+        <>
+          <div className="mt-10 flex max-h-[760px] flex-col gap-[36px] overflow-y-auto pt-[93px] pl-[40px]">
+            {cartData.map((product, index) => (
+              <CartProduct
+                key={product.id || index}
+                product={product}
+                onQuantityChange={handleQuantityChange}
+                onDelete={handleDelete}
+              />
+            ))}
+          </div>
 
-      <div className="absolute bottom-[40px] left-[40px] flex flex-col gap-[102px]">
-        <div className="h-[110px] w-[460px] gap-[16px]">
-          <div className="flex justify-between text-[16px]">
-            <p>Items subtotal</p>
-            <p>$ {totalPrice}</p>
-          </div>
-          <div className="flex justify-between text-[16px]">
-            <p>Delivery</p>
-            <p>$ 5</p>
-          </div>
-          <div className="flex justify-between text-[20px]">
-            <p>Total</p>
-            <p>$ {totalPrice + 5}</p>
-          </div>
-        </div>
+          <div className="absolute bottom-[40px] left-[40px] flex flex-col gap-[102px]">
+            <div className="h-[110px] w-[460px] gap-[16px]">
+              <div className="flex justify-between text-[16px]">
+                <p>Items subtotal</p>
+                <p>$ {totalPrice}</p>
+              </div>
+              <div className="flex justify-between text-[16px]">
+                <p>Delivery</p>
+                <p>$ 5</p>
+              </div>
+              <div className="flex justify-between text-[20px]">
+                <p>Total</p>
+                <p>$ {totalPrice + 5}</p>
+              </div>
+            </div>
 
-        <Button
-          title={"Go to checkout"}
-          style="w-[460px] t-[59px] rounded-[10px] px-[60px] py-[16px] bg-[#FF4000] text-[#FFFFFF] cursor-pointer"
-          onClick={() => navigate("/checkout")}
-        />
-      </div>
+            <Button
+              title={"Go to checkout"}
+              style="w-[460px] t-[59px] rounded-[10px] px-[60px] py-[16px] bg-[#FF4000] text-[#FFFFFF] cursor-pointer"
+              onClick={() => navigate("/checkout")}
+            />
+          </div>
+        </>
+      ) : (
+        showEmptyModal && (
+          <EmptyCartModal onStartShopping={() => navigate("/products")} />
+        )
+      )}
     </div>
   );
 };
