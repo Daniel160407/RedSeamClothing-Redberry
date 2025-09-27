@@ -4,6 +4,7 @@ import PulsingInfo from "../uiComponents/PulsingInfo";
 import CartIcon from "../icons/CartIcon";
 import Dropdown from "../uiComponents/Dropdown";
 import DownArrowIcon from "../icons/DownArrowIcon";
+import Cookies from "js-cookie";
 
 const ProductDetails = ({
   productInfo,
@@ -72,10 +73,6 @@ const ProductDetails = ({
     },
     [colorAlternatives],
   );
-
-  if (!productInfo || !productInfo.available_colors) {
-    return <PulsingInfo />;
-  }
 
   const {
     name = "Product Name",
@@ -178,9 +175,11 @@ const ProductDetails = ({
           <Button
             icon={CartIcon}
             title={"Add to cart"}
-            style={`${available_colors && available_sizes ? "cursor-pointer" : "cursor-not-allowed opacity-50"} py-[16px] px-[60px] text-[#FFFFFF] flex h-[50px] w-[704px] items-center justify-center gap-[10px] rounded-[10px] bg-[#FF4000] text-center`}
+            style={`${available_colors && available_sizes && Cookies.get("token") ? "cursor-pointer" : "cursor-not-allowed opacity-50"} py-[16px] px-[60px] text-[#FFFFFF] flex h-[50px] w-[704px] items-center justify-center gap-[10px] rounded-[10px] bg-[#FF4000] text-center`}
             onClick={
-              available_colors && available_sizes ? onAddToCart : undefined
+              available_colors && available_sizes && Cookies.get("token")
+                ? onAddToCart
+                : undefined
             }
           />
         </div>

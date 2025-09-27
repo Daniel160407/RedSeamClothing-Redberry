@@ -71,7 +71,7 @@ const ProductInfo = () => {
 
   return (
     <>
-      <Navbar openCart={openShoppingCart} />
+      <Navbar openCart={openShoppingCart} setOpenCart={setOpenShoppingCart} />
       <div className="flex">
         <div>
           <div>

@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import ShoppingCart from "./ShoppingCart";
 import DownArrowIcon from "../icons/DownArrowIcon";
 
-const Navbar = ({ openCart }) => {
+const Navbar = ({ openCart, setOpenCart }) => {
   const [searchParams] = useSearchParams();
   const [showShoppingCart, setShowShoppingCart] = useState(false);
 
@@ -43,15 +43,35 @@ const Navbar = ({ openCart }) => {
     setShowShoppingCart(openCart);
   }, [openCart]);
 
+  const handleCloseCart = () => {
+    setShowShoppingCart(false);
+    setOpenCart?.(false);
+  };
+
+  const handleToggleCart = () => {
+    setShowShoppingCart((prev) => {
+      const next = !prev;
+      setOpenCart?.(next);
+      return next;
+    });
+  };
+
   return (
     <>
-      <nav className="flex w-full items-center justify-between bg-[#FFFFFF] px-10 py-4">
+      {showShoppingCart && (
+        <div
+          className="fixed inset-0 z-[1000] bg-black/30"
+          onClick={handleCloseCart}
+        />
+      )}
+
+      <nav className="relative z-50 mb-10 flex w-full items-center justify-between bg-[#FFFFFF] py-4">
         <div
           className="ml-20 flex cursor-pointer items-center space-x-3"
           onClick={onLogoClick}
         >
           <LogoIcon />
-          <p className="font-100 text-[16px] font-semibold text-gray-900">
+          <p className="font-100 font-poppins text-[16px] font-semibold text-gray-900">
             RedSeam Clothing
           </p>
         </div>
@@ -60,7 +80,7 @@ const Navbar = ({ openCart }) => {
           <div>
             <Button
               icon={DefaultAvatarIcon}
-              title={"Log in"}
+              title="Log in"
               style="flex cursor-pointer items-center gap-[20px] rounded-lg px-4 py-2 transition-colors duration-200"
               onClick={onLoginClick}
             />
@@ -69,7 +89,7 @@ const Navbar = ({ openCart }) => {
           <div className="mr-20 flex items-center space-x-6">
             <Button
               icon={DarkCartIcon}
-              onClick={() => setShowShoppingCart(!showShoppingCart)}
+              onClick={handleToggleCart}
               style="cursor-pointer"
             />
 
@@ -83,7 +103,7 @@ const Navbar = ({ openCart }) => {
           </div>
         )}
       </nav>
-      {showShoppingCart && <ShoppingCart setShowCart={setShowShoppingCart} />}
+      {showShoppingCart && <ShoppingCart setShowCart={handleCloseCart} />}
     </>
   );
 };
