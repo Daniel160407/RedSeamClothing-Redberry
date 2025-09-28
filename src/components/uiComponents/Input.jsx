@@ -14,7 +14,7 @@ const Input = ({
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const getInputType = () => {
-    if (type !== "password") return type;
+    if (type) return type;
     return isPasswordVisible ? "text" : "password";
   };
 
@@ -35,7 +35,7 @@ const Input = ({
               value={value}
               onChange={setValue}
             />
-            {type === "password" && (
+            {!type && (
               <Button
                 icon={EyeIcon}
                 type="button"

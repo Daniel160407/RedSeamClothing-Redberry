@@ -108,6 +108,7 @@ const Checkout = () => {
       );
       if (response?.status === 200) {
         setShowSuccessMessage(true);
+        setCartData([]);
       }
     } catch (error) {
       if (error.response?.status === 422) {

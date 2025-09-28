@@ -81,7 +81,7 @@ const Navbar = ({ openCart, setOpenCart }) => {
             <Button
               icon={DefaultAvatarIcon}
               title="Log in"
-              style="flex cursor-pointer items-center gap-[20px] rounded-lg px-4 py-2 transition-colors duration-200"
+              style="flex cursor-pointer items-center mr-20 gap-[20px] rounded-lg px-4 py-2 transition-colors duration-200"
               onClick={onLoginClick}
             />
           </div>

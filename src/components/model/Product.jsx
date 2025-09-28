@@ -17,7 +17,7 @@ const Product = ({ product, onClick, index }) => {
         isVisible
           ? "translate-y-0 scale-100 opacity-100"
           : "translate-y-6 scale-95 opacity-0"
-      } hover:scale-105`}
+      }`}
       onClick={() => onClick(product.id)}
     >
       <img

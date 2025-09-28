@@ -96,6 +96,12 @@ const Register = () => {
     }
   };
 
+  const triggerFileInput = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
   useEffect(() => {
     if (!error?.password) return;
 
@@ -125,12 +131,6 @@ const Register = () => {
       confirmPassword: confirmPasswordError,
     });
   }, [error]);
-
-  const triggerFileInput = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
 
   return (
     <>

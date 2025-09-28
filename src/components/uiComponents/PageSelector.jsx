@@ -63,7 +63,7 @@ const PageSelector = ({
   const visiblePages = getVisiblePages();
 
   return (
-    <div className={`flex items-center justify-center gap-2 mt-20 mb-50`}>
+    <div className={`mt-20 mb-50 flex items-center justify-center gap-2`}>
       {showPrevNext && (
         <Button
           onClick={() =>
