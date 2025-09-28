@@ -10,12 +10,17 @@ const ProductInfo = () => {
   const [productInfo, setProductInfo] = useState({});
   const [activeImage, setActiveImage] = useState("/");
   const [openShoppingCart, setOpenShoppingCart] = useState(false);
+  const [isPageLoaded, setIsPageLoaded] = useState(false);
 
   const [productSettings, setProductSettings] = useState({
     color: searchParams.get("color") ?? "",
     size: "M",
     quantity: "1",
   });
+
+  useEffect(() => {
+    setIsPageLoaded(true);
+  }, []);
 
   const handleColorChange = (index) => {
     const color = productInfo.available_colors[index];
@@ -72,10 +77,12 @@ const ProductInfo = () => {
   return (
     <>
       <Navbar openCart={openShoppingCart} setOpenCart={setOpenShoppingCart} />
-      <div className="flex">
+      <div className={`flex transition-all duration-700 ease-out ${
+        isPageLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+      }`}>
         <div>
           <div>
-            <p className="absolute top-[110px] left-[100px] text-[14px]">
+            <p className="absolute left-20 text-[14px] transition-colors duration-300 ease-out hover:text-gray-600">
               Listing / Product
             </p>
             <ProductImagesList
@@ -85,7 +92,7 @@ const ProductInfo = () => {
           </div>
           <img
             src={activeImage}
-            className="top-45 absolute left-[245px] max-w-[703px]"
+            className="absolute left-[245px] max-w-[703px] transition-transform duration-500 ease-out"
           />
         </div>
         <ProductDetails

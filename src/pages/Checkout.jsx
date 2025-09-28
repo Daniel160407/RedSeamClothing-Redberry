@@ -259,7 +259,7 @@ const Checkout = () => {
 
             <Button
               title="Pay"
-              style="w-full rounded-[10px] py-[16px] px-[60px] bg-[#FF4000] text-white mt-20 cursor-pointer"
+              style="w-full rounded-[10px] py-[16px] px-[60px] bg-[#FF4000] text-white mt-20 cursor-pointer transition-all duration-300 ease-out hover:-translate-y-1"
               onClick={handlePayment}
             />
           </div>

@@ -10,7 +10,7 @@ import DownArrowIcon from "../icons/DownArrowIcon";
 
 const Navbar = ({ openCart, setOpenCart }) => {
   const [searchParams] = useSearchParams();
-  const [showShoppingCart, setShowShoppingCart] = useState(false);
+  const [showShoppingCart, setShowShoppingCart] = useState(openCart || false);
 
   const navigate = useNavigate();
   const isLoggedIn = !!Cookies.get("token");
@@ -40,7 +40,9 @@ const Navbar = ({ openCart, setOpenCart }) => {
   };
 
   useEffect(() => {
-    setShowShoppingCart(openCart);
+    if (openCart !== showShoppingCart) {
+      setShowShoppingCart(openCart);
+    }
   }, [openCart]);
 
   const handleCloseCart = () => {
@@ -49,11 +51,9 @@ const Navbar = ({ openCart, setOpenCart }) => {
   };
 
   const handleToggleCart = () => {
-    setShowShoppingCart((prev) => {
-      const next = !prev;
-      setOpenCart?.(next);
-      return next;
-    });
+    const nextState = !showShoppingCart;
+    setShowShoppingCart(nextState);
+    setOpenCart?.(nextState);
   };
 
   return (
@@ -97,6 +97,7 @@ const Navbar = ({ openCart, setOpenCart }) => {
               <img
                 src={Cookies.get("profile_photo") ?? "/images/Avatar.jpg"}
                 className="h-10 w-10 rounded-full object-cover"
+                alt="Profile"
               />
               <Button icon={DownArrowIcon} style="h-5 w-5 cursor-pointer" />
             </div>

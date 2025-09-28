@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import useAxios from "../hooks/UseAxios";
 import ProductsList from "../components/lists/ProductsList";
 import PageSelector from "../components/uiComponents/PageSelector";
@@ -11,19 +11,22 @@ import CloseIcon from "../components/icons/CloseIcon";
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
-  const [page, setPage] = useState(searchParams.get("page") ?? 1);
+  const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
   const [lastPage, setLastPage] = useState(0);
   const [productsFrom, setProductsFrom] = useState(0);
   const [productsTo, setProductsTo] = useState(0);
   const [productsTotal, setProductsTotal] = useState(0);
   const [filterFrom, setFilterFrom] = useState(
-    searchParams.get("filterfrom") ?? "",
+    searchParams.get("filterfrom") || "",
   );
-  const [filterTo, setFilterTo] = useState(searchParams.get("filterto") ?? "");
+  const [filterTo, setFilterTo] = useState(searchParams.get("filterto") || "");
   const [showFilters, setShowFilters] = useState(
-    filterFrom && filterTo ? true : false,
+    searchParams.get("filterfrom") && searchParams.get("filterto")
+      ? true
+      : false,
   );
-  const [sortBy, setSortBy] = useState(searchParams.get("sort") ?? "");
+  const [sortBy, setSortBy] = useState(searchParams.get("sort") || "");
+  const [isPageLoaded, setIsPageLoaded] = useState(false);
 
   const navigate = useNavigate();
 
@@ -54,18 +57,23 @@ const Products = () => {
     setSearchParams(params);
   };
 
-  const fetchProducts = async () => {
-    const response = await useAxios.get(
-      `/products?sort=${sortBy}&filter[price_from]=${filterFrom}&filter[price_to]=${filterTo}&page=${page}`,
-    );
-    const { data, meta } = response.data;
-    setProducts(data);
-    setPage(meta.current_page);
-    setLastPage(meta.last_page);
-    setProductsFrom(meta.from);
-    setProductsTo(meta.to);
-    setProductsTotal(meta.total);
-  };
+  const fetchProducts = useCallback(async () => {
+    try {
+      const response = await useAxios.get(
+        `/products?sort=${sortBy}&filter[price_from]=${filterFrom}&filter[price_to]=${filterTo}&page=${page}`,
+      );
+
+      const { data, meta } = response.data;
+      setProducts(data);
+      setPage(meta.current_page);
+      setLastPage(meta.last_page);
+      setProductsFrom(meta.from);
+      setProductsTo(meta.to);
+      setProductsTotal(meta.total);
+    } catch (error) {
+      console.error("Failed to fetch products:", error);
+    }
+  }, [sortBy, filterFrom, filterTo, page]);
 
   const handleFilterApply = () => {
     const params = new URLSearchParams(searchParams);
@@ -73,7 +81,6 @@ const Products = () => {
     params.set("filterto", filterTo);
     setSearchParams(params);
     setShowFilters(true);
-    fetchProducts();
   };
 
   const handleRemoveFilter = () => {
@@ -87,18 +94,21 @@ const Products = () => {
   };
 
   useEffect(() => {
-    if (showFilters) return;
     fetchProducts();
-  }, [showFilters]);
+  }, [fetchProducts]);
 
   useEffect(() => {
-    fetchProducts();
-  }, [page, sortBy]);
+    setIsPageLoaded(true);
+  }, []);
 
   return (
     <>
       <Navbar />
-      <div className="mr-20 ml-20">
+      <div
+        className={`mr-20 ml-20 transform transition-all duration-700 ease-out ${
+          isPageLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+        }`}
+      >
         <ProductsHeader
           productsFrom={productsFrom}
           productsTo={productsTo}
@@ -112,14 +122,14 @@ const Products = () => {
           setSortBy={handleSortByChange}
         />
         {showFilters && (
-          <div className="flex w-auto max-w-[170px] items-center justify-center gap-[6px] rounded-[50px] border border-[#E1DFE1] px-[16px] py-[8px]">
+          <div className="flex w-auto max-w-[170px] transform items-center justify-center gap-[6px] rounded-[50px] border border-[#E1DFE1] px-[16px] py-[8px] transition-all duration-500 ease-out hover:scale-105">
             <p className="text-[14px]">
               Price: {filterFrom}-{filterTo}
             </p>
             <Button
               icon={CloseIcon}
               onClick={handleRemoveFilter}
-              style="w-[6.75px] h-[6.75px] cursor-pointer"
+              style="w-[6.75px] h-[6.75px] cursor-pointer transition-transform duration-200 ease-out hover:scale-125"
             />
           </div>
         )}

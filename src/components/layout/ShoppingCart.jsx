@@ -12,8 +12,16 @@ const ShoppingCart = ({ setShowCart }) => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [productsAmount, setProductsAmount] = useState(0);
   const [showEmptyModal, setShowEmptyModal] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   const navigate = useNavigate();
+
+  const handleClose = () => {
+    setIsVisible(false);
+    setTimeout(() => {
+      setShowCart(false);
+    }, 500);
+  };
 
   const handleQuantityChange = async (productId, quantity) => {
     try {
@@ -86,8 +94,13 @@ const ShoppingCart = ({ setShowCart }) => {
   };
 
   const handleStartShopping = () => {
-    setShowCart(false);
+    handleClose();
     navigate("/products");
+  };
+
+  const handleCheckout = () => {
+    handleClose();
+    navigate("/checkout");
   };
 
   useEffect(() => {
@@ -118,14 +131,22 @@ const ShoppingCart = ({ setShowCart }) => {
     fetchCartData();
   }, []);
 
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
   return (
-    <div className="fixed top-0 right-0 z-1000 h-full w-[540px] border-l border-[#E1DFE1] bg-[#f8f6f7]">
+    <div
+      className={`fixed top-0 right-0 z-1000 h-full w-[540px] transform border-l border-[#E1DFE1] bg-[#f8f6f7] transition-transform duration-500 ease-out ${
+        isVisible ? "translate-x-0" : "translate-x-full"
+      }`}
+    >
       <div className="flex items-center justify-between px-[40px] pt-[41px]">
         <p className="h-[30px] w-auto text-[20px]">
           Shopping cart ({productsAmount})
         </p>
         <div
-          onClick={() => setShowCart(false)}
+          onClick={handleClose}
           className="flex h-[32px] w-[32px] cursor-pointer items-center justify-center"
         >
           <CloseIcon />
@@ -164,10 +185,7 @@ const ShoppingCart = ({ setShowCart }) => {
             <Button
               title={"Go to checkout"}
               style="w-[460px] t-[59px] rounded-[10px] px-[60px] py-[16px] bg-[#FF4000] text-[#FFFFFF] cursor-pointer"
-              onClick={() => {
-                navigate("/checkout");
-                setShowCart(false);
-              }}
+              onClick={handleCheckout}
             />
           </div>
         </>
