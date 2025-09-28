@@ -12,7 +12,7 @@ const CartProduct = ({ product, onQuantityChange, onDelete }) => {
   return (
     <div className="flex gap-[17px]">
       <img
-        src={product.cover_image}
+        src={product.images[product.available_colors.indexOf(product.color)]}
         className="w-[100px] rounded-[10px] border border-[#E1DFE1]"
       />
       <div className="flex flex-col gap-[13px]">
@@ -42,7 +42,7 @@ const CartProduct = ({ product, onQuantityChange, onDelete }) => {
               <PlusIcon />
             </div>
           </div>
-          <div onClick={() => onDelete(product.id)} className="cursor-pointer">
+          <div onClick={() => onDelete(product.id)} className="cursor-pointer text-[#3E424A] text-[12px]">
             <p>Remove</p>
           </div>
         </div>

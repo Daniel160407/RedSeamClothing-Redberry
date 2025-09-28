@@ -82,12 +82,11 @@ const Login = () => {
                 errorMessage={error.password ?? null}
               />
             </div>
-            <button
+            <Button
               type="submit"
-              className="mt-6 h-[41px] w-[554px] cursor-pointer rounded-[10px] bg-orange-600 px-5 py-2.5 text-white hover:bg-orange-700"
-            >
-              Log in
-            </button>
+              title={"Log in"}
+              style="mt-6 h-[41px] w-[554px] cursor-pointer rounded-[10px] bg-orange-600 px-5 py-2.5 text-white hover:bg-orange-700"
+            />
           </form>
           <p className="mt-4 w-full text-center text-[14px] text-gray-600">
             Not a memeber?{" "}
