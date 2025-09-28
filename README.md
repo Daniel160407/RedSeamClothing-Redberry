@@ -1,12 +1,71 @@
-# React + Vite
+# RedSeam Clothing Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is an e-commerce clothing website built using React and Tailwind CSS.  
+The website provides a seamless shopping experience where users can browse products, filter and sort by price, view detailed product information, and manage their shopping cart.
 
-Currently, two official plugins are available:
+### Table of Contents
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [Key Features](#Key-Features)
+- [Tech Stack](#tech-stack)
+- [Resources](#resources)
+- [Getting Started](#getting-started)
+- [Screenshots](#screenshots)
 
-## Expanding the ESLint configuration
+### Key Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Product Browsing**: Explore clothing products with detailed descriptions and images.
+- **Filtering & Sorting**: Search and filter by price, categories, or attributes.
+- **Product Details**: Choose size, color, and see available product images.
+- **Shopping Cart**: Add, remove, and update product quantities easily.
+- **Checkout**: Simple flow for completing a purchase.
+- **Authentication**: Register and log in to manage your shopping.
+
+### Tech Stack
+
+- [React](https://react.dev/) – Frontend library for building UI
+- [React Router](https://reactrouter.com/) – Declarative routing for React
+- [Axios](https://axios-http.com/) – HTTP client for API requests
+- [Tailwind CSS](https://tailwindcss.com/) – Utility-first CSS framework
+- [JavaScript (ES6+)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+
+### Resources
+
+- [Assignment](https://redberry.gitbook.io/redberry-bootcamp.store-shopping-website)
+- [figma](https://www.figma.com/design/mNz6RGauIhHyuMrGFcPBHs/Bootcamp---RedSeam-Clothing?node-id=108-803&t=8oE9Vc8KBGwEurfB-0)
+
+### Getting Started
+
+1\. Clone the repository to your local machine
+
+```sh
+https://github.com/Daniel160407/RedSeamClothing-Redberry
+```
+
+3\. Run npm install to install the dependencies
+
+```sh
+npm install
+```
+
+4\. Run npm install axios, npm install js-cookie and npm install tailwindcss @tailwindcss/vite
+
+```sh
+npm install axios
+npm install js-cookie
+npm install tailwindcss @tailwindcss/vite
+```
+
+5\. Run npm run dev to start the server
+
+```sh
+npm run dev
+```
+
+### screenshots
+
+![App Screenshot](public/readme/login.png)
+![App Screenshot](public/readme/register.png)
+![App Screenshot](public/readme/products.png)
+![App Screenshot](public/readme/product_details.png)
+![App Screenshot](public/readme/cart.png)
+![App Screenshot](public/readme/checkout.png)
