@@ -85,7 +85,7 @@ const ProductInfo = () => {
           </div>
           <img
             src={activeImage}
-            className="top-180px absolute left-[245px] max-w-[703px]"
+            className="top-45 absolute left-[245px] max-w-[703px]"
           />
         </div>
         <ProductDetails

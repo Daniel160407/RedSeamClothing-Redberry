@@ -73,12 +73,21 @@ const ShoppingCart = ({ setShowCart }) => {
           setTotalPrice(newTotal);
           setProductsAmount(newProductsAmount);
 
+          if (cartData.length <= 0) {
+            setShowEmptyModal(true);
+          }
+
           return updatedCart;
         });
       }
     } catch (err) {
       console.error("Request failed with error message: " + err);
     }
+  };
+
+  const handleStartShopping = () => {
+    setShowCart(false);
+    navigate("/products");
   };
 
   useEffect(() => {
@@ -98,7 +107,7 @@ const ShoppingCart = ({ setShowCart }) => {
           data.reduce((total, product) => total + product.quantity, 0),
         );
 
-        if (data.length === 0) {
+        if (cartData.length <= 0) {
           setShowEmptyModal(true);
         }
       } catch (error) {
@@ -112,7 +121,7 @@ const ShoppingCart = ({ setShowCart }) => {
   return (
     <div className="fixed top-0 right-0 z-1000 h-full w-[540px] border-l border-[#E1DFE1] bg-[#f8f6f7]">
       <div className="flex items-center justify-between px-[40px] pt-[41px]">
-        <p className="h-[30px] w-[180px] text-[20px]">
+        <p className="h-[30px] w-auto text-[20px]">
           Shopping cart ({productsAmount})
         </p>
         <div
@@ -125,10 +134,10 @@ const ShoppingCart = ({ setShowCart }) => {
 
       {productsAmount > 0 ? (
         <>
-          <div className="mt-10 flex max-h-[760px] flex-col gap-[36px] overflow-y-auto pt-[93px] pl-[40px]">
+          <div className="mt-10 flex max-h-[760px] flex-col gap-[36px] overflow-y-auto pt-3 pl-[40px]">
             {cartData.map((product, index) => (
               <CartProduct
-                key={product.id || index}
+                key={product.id + index}
                 product={product}
                 onQuantityChange={handleQuantityChange}
                 onDelete={handleDelete}
@@ -155,13 +164,16 @@ const ShoppingCart = ({ setShowCart }) => {
             <Button
               title={"Go to checkout"}
               style="w-[460px] t-[59px] rounded-[10px] px-[60px] py-[16px] bg-[#FF4000] text-[#FFFFFF] cursor-pointer"
-              onClick={() => navigate("/checkout")}
+              onClick={() => {
+                navigate("/checkout");
+                setShowCart(false);
+              }}
             />
           </div>
         </>
       ) : (
         showEmptyModal && (
-          <EmptyCartModal onStartShopping={() => navigate("/products")} />
+          <EmptyCartModal onStartShopping={handleStartShopping} />
         )
       )}
     </div>

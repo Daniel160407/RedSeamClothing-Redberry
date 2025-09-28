@@ -1,6 +1,5 @@
 import { useCallback, useMemo } from "react";
 import Button from "../uiComponents/Button";
-import PulsingInfo from "../uiComponents/PulsingInfo";
 import CartIcon from "../icons/CartIcon";
 import Dropdown from "../uiComponents/Dropdown";
 import DownArrowIcon from "../icons/DownArrowIcon";
@@ -86,10 +85,10 @@ const ProductDetails = ({
   const { image: brandImage, name: brandName } = brand;
 
   return (
-    <div className="relative top-[180px] left-[60%] flex w-[704px] flex-col gap-[56px]">
-      <div className="flex flex-col gap-[21px]">
-        <h1 className="text-[32px]">{name}</h1>
-        <p className="text-[32px]">$ {price}</p>
+    <div className="relative top-15 left-[60%] flex w-[704px] flex-col gap-[56px]">
+      <div className="flex flex-col gap-[21px] text-[32px] font-semibold">
+        <h1>{name}</h1>
+        <p>$ {price}</p>
       </div>
 
       <div className="flex flex-col gap-[48px]">
@@ -175,7 +174,7 @@ const ProductDetails = ({
           <Button
             icon={CartIcon}
             title={"Add to cart"}
-            style={`${available_colors && available_sizes && Cookies.get("token") ? "cursor-pointer" : "cursor-not-allowed opacity-50"} py-[16px] px-[60px] text-[#FFFFFF] flex h-[50px] w-[704px] items-center justify-center gap-[10px] rounded-[10px] bg-[#FF4000] text-center`}
+            style={`${available_colors && available_sizes && Cookies.get("token") ? "cursor-pointer" : "cursor-not-allowed opacity-50"} font-medium py-[16px] px-[60px] text-[#FFFFFF] flex h-[50px] w-[704px] items-center justify-center gap-[10px] rounded-[10px] bg-[#FF4000] text-center`}
             onClick={
               available_colors && available_sizes && Cookies.get("token")
                 ? onAddToCart
@@ -188,7 +187,7 @@ const ProductDetails = ({
 
         <div>
           <div className="flex justify-between">
-            <p className="text-[20px]">Details</p>
+            <p className="text-[20px] font-medium">Details</p>
             {brandImage && (
               <img
                 src={brandImage}

@@ -123,11 +123,6 @@ const Checkout = () => {
     }
   };
 
-  const handleSuccessMessageClose = () => {
-    setShowSuccessMessage(false);
-    navigate("/products");
-  };
-
   useEffect(() => {
     const fetchCartData = async () => {
       try {
@@ -154,15 +149,18 @@ const Checkout = () => {
       <Navbar />
 
       {showSuccessMessage && (
-        <SuccessLayout handleClose={handleSuccessMessageClose} />
+        <SuccessLayout
+          handleClose={() => setShowSuccessMessage(false)}
+          handleContinueShoppingClick={() => navigate("/products")}
+        />
       )}
 
-      <h1 className="font-poppins mx-30 mt-20 mb-8 text-[42px] font-semibold">
+      <h1 className="font-poppins mx-20 mt-20 mb-8 text-[42px] font-semibold">
         Checkout
       </h1>
 
       <div className="flex gap-10">
-        <div className="mx-30 mt-10 h-[40rem] w-[71rem] rounded-xl bg-[#F8F6F7] p-10">
+        <div className="mx-20 mt-10 h-[45rem] w-[71rem] rounded-xl bg-[#F8F6F7] p-10">
           <div className="w-[578px] space-y-6">
             <p className="text-lg text-[22px] font-medium">Order details</p>
 
@@ -232,8 +230,8 @@ const Checkout = () => {
         </div>
 
         {cartData.length > 0 && (
-          <div>
-            <div className="flex max-h-[304px] flex-col gap-[36px] overflow-y-auto">
+          <div className="mt-10">
+            <div className="flex max-h-100 flex-col gap-[36px] overflow-y-auto">
               {cartData.map((product, index) => (
                 <CartProduct
                   key={index}
@@ -244,7 +242,7 @@ const Checkout = () => {
               ))}
             </div>
 
-            <div className="mt-30 flex flex-col gap-[16px]">
+            <div className="mt-20 flex flex-col gap-[16px]">
               <div className="flex justify-between text-[16px]">
                 <p>Items subtotal</p>
                 <p>$ {totalPrice}</p>

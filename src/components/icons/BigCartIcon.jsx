@@ -9,7 +9,6 @@ const BigCartIcon = () => {
     >
       <mask
         id="mask0_84_263"
-        maskType="luminance"
         maskUnits="userSpaceOnUse"
         x="0"
         y="0"

@@ -44,10 +44,10 @@ const ProductsHeader = ({
   };
 
   return (
-    <div className="flex w-full items-center justify-between px-8 py-4">
-      <h1 className="text-[42px] text-gray-900">Products</h1>
+    <div className="flex w-full items-center justify-between py-4">
+      <h1 className="text-gray-9000 text-[42px] font-semibold">Products</h1>
 
-      <div className="flex items-center space-x-6 text-sm text-gray-600">
+      <div className="flex items-center gap-4 space-x-6 text-sm text-[#3E424A]-600">
         <p>
           Showing {productsFrom}–{productsTo} of {productsTotal} results
         </p>
@@ -59,11 +59,11 @@ const ProductsHeader = ({
             icon={FilterIcon}
             title={"Filter"}
             onClick={() => setShowFilterOptions(!showFilterOptions)}
-            style="flex gap-[8px] cursor-pointer"
+            style="flex gap-[8px] cursor-pointer text-[#10151F]"
           />
           {showFilterOptions && (
             <div className="absolute top-full right-0 z-50 mt-2 flex w-[392px] max-w-[392px] flex-col gap-[20px] rounded-[8px] border border-[#E1DFE1] bg-[#FFFFFF] p-[16px]">
-              <p className="text-semibold font-poppins text-[16px]">
+              <p className="text-semibold font-poppins text-[16px] text-[#10151F]">
                 Select price
               </p>
               <div className="flex gap-[10px]">
@@ -106,7 +106,6 @@ const ProductsHeader = ({
             defaultValue={sortObject[sortBy] ?? "Sort by"}
           />
         </div>
-        <div></div>
       </div>
     </div>
   );

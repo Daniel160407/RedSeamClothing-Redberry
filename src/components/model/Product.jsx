@@ -7,10 +7,10 @@ const Product = ({ product, onClick }) => {
       <img
         src={product.cover_image}
         alt={product.name}
-        className="h-full w-full object-cover"
+        className="h-full w-full object-cover rounded-[10px]"
       />
 
-      <p className="mt-3 text-[18px] font-semibold text-gray-900">
+      <p className="mt-3 text-[18px] font-medium text-gray-900">
         {product.name}
       </p>
 
